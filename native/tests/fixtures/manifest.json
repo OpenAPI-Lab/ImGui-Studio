@@ -1,0 +1,8 @@
+{
+  "widgetTypes": 60,
+  "sources": {
+    "src/types/imgui.ts": "7a7782412d90c70d6b8c4f9943a5e0f6c4818bcd7781b9075324499b4bfbcdad",
+    "src/data/widgetCatalog.ts": "12219cb21223513a58c91439f3f71e1bdde3f604264592363e0d9ac6906f5b96",
+    "src/utils/treeHelpers.ts": "8b4829cc8a4ff710a233cef34c87a5b1f61bb91906a45b1195785deebcfc6deb"
+  }
+}

@@ -1,0 +1,5 @@
+#pragma once
+
+namespace ImGuiStudio {
+inline constexpr char statusWidgetSource[] = R"STUDIO_STATUS(@STUDIO_STATUS_WIDGET_SOURCE@)STUDIO_STATUS";
+}

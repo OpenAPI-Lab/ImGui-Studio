@@ -1,0 +1,54 @@
+{
+  "name": "Imágenes y entrada",
+  "style": { "preset": "dark" },
+  "canvas": { "orientation": "landscape", "canvasWidth": 640, "canvasHeight": 400 },
+  "nodes": [
+    {
+      "id": "vulkan_window",
+      "type": "window",
+      "label": "Prueba del renderizador",
+      "varName": "vulkan_open",
+      "x": 32,
+      "y": 24,
+      "width": 470,
+      "height": 280,
+      "props": {},
+      "children": [
+        {
+          "id": "vulkan_check",
+          "type": "checkbox",
+          "label": "Entrada del ratón",
+          "varName": "input_checked",
+          "props": { "defaultBool": false }
+        },
+        {
+          "id": "vulkan_png",
+          "type": "image",
+          "label": "PNG",
+          "varName": "sample_png",
+          "width": 112,
+          "height": 92,
+          "props": {
+            "imageAsset": {
+              "data": "iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAYAAAD0In+KAAAAEUlEQVR4nGP4z8Dwn+E/QwMAEHkDfiHA/Y0AAAAASUVORK5CYII="
+            }
+          }
+        },
+        {
+          "id": "vulkan_jpeg",
+          "type": "image",
+          "label": "JPEG",
+          "varName": "sample_jpeg",
+          "sameLine": true,
+          "width": 112,
+          "height": 92,
+          "props": {
+            "imageAsset": {
+              "data": "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgEBAQEBAUFBQUFBQYGBgYGBgYGBgYGBgYHBwcICAgHBwcGBgcHCAgICAkJCQgICAgJCQoKCgwMCwsODg4RERT/xABKAAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAAAEAEAAAAAAAAAAAAAAAAAAAAAEQEAAAAAAAAAAAAAAAAAAAAA/8AAEQgAAgACAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8AAA//2Q=="
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

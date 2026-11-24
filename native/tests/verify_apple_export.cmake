@@ -1,0 +1,26 @@
+string(RANDOM LENGTH 12 suffix)
+set(directory "${OUTPUT}/projects-${suffix}")
+file(MAKE_DIRECTORY "${directory}/packs")
+foreach(platform IN ITEMS macOS iOS)
+  execute_process(COMMAND "${CMAKE_COMMAND}" -E tar xf "${PACKS}/ImGuiStudio-${platform}-Cpp-1.0.0.zip"
+    WORKING_DIRECTORY "${directory}/packs" RESULT_VARIABLE result TIMEOUT 30)
+  if(NOT result STREQUAL "0")
+    message(FATAL_ERROR "Cannot extract ${platform} pack: ${result}")
+  endif()
+endforeach()
+execute_process(COMMAND "${GENERATOR}" --apple "${directory}/packs" "${directory}"
+  RESULT_VARIABLE result TIMEOUT 30)
+if(NOT result STREQUAL "0")
+  message(FATAL_ERROR "Apple export generation failed: ${result}")
+endif()
+
+if(NOT CMAKE_HOST_APPLE)
+  foreach(platform IN ITEMS macos ios)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -S "${directory}/${platform}" -B "${directory}/${platform}-build"
+      RESULT_VARIABLE result ERROR_VARIABLE error TIMEOUT 30)
+    if(result STREQUAL "0" OR NOT error MATCHES "requires a Mac with Xcode")
+      message(FATAL_ERROR "Unexpected configure result for ${platform}: ${result}, ${error}")
+    endif()
+  endforeach()
+endif()
+message(STATUS "Generated Apple projects: ${directory}")

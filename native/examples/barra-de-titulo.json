@@ -1,0 +1,114 @@
+{
+  "name": "Barra de título",
+  "style": { "preset": "dark" },
+  "canvas": { "orientation": "landscape", "canvasWidth": 1000, "canvasHeight": 660 },
+  "nodes": [
+    {
+      "id": "chrome",
+      "type": "window",
+      "label": "Panel de actividad",
+      "varName": "chrome_open",
+      "x": 40,
+      "y": 40,
+      "width": 620,
+      "height": 280,
+      "props": {
+        "closable": true,
+        "showMinimizeButton": true,
+        "showMaximizeButton": true,
+        "titleAlign": "right",
+        "windowControlsSide": "right",
+        "windowControlsVariant": "traffic_lights",
+        "windowTitleIcon": "app",
+        "windowShadow": "glow",
+        "titleBarHeight": 44,
+        "titleBarOffsetLeft": 22,
+        "titleBarOffsetRight": 32,
+        "titleBarSeparator": true,
+        "titleBarSeparatorColor": "#F04CB0",
+        "windowBgOverride": "#172642",
+        "titleBgOverride": "#284C73",
+        "windowBorderColorOverride": "#62A6EC",
+        "textColorOverride": "#FAF4C6",
+        "windowRoundingOverride": 9,
+        "windowBorderSizeOverride": 2,
+        "windowPaddingXOverride": 17,
+        "windowPaddingYOverride": 19,
+        "windowAlphaOverride": 1
+      },
+      "children": [
+        {
+          "id": "chrome_menu",
+          "type": "menu_bar",
+          "label": "Menú principal",
+          "varName": "chrome_menu",
+          "width": 112,
+          "props": { "menuBarEdge": "titlebar", "titleBarSide": "left", "items": ["Archivo", "Ver"] }
+        },
+        {
+          "id": "chrome_checkbox",
+          "type": "checkbox",
+          "label": "Activo",
+          "varName": "chrome_checked",
+          "props": {
+            "inTitleBar": true,
+            "titleBarSide": "center",
+            "defaultBool": false,
+            "checkMarkColorOverride": "#66FFA0"
+          }
+        },
+        {
+          "id": "chrome_action",
+          "type": "title_bar_button",
+          "label": "Ayuda",
+          "varName": "chrome_help",
+          "width": 82,
+          "height": 25,
+          "props": {
+            "titleBarSide": "free",
+            "titleBarX": 410,
+            "titleBarY": 8,
+            "titleBarIcon": "search",
+            "buttonHoveredColorOverride": "#8855DD"
+          }
+        },
+        {
+          "id": "chrome_query",
+          "type": "input_text",
+          "label": "",
+          "varName": "chrome_query",
+          "width": 100,
+          "height": 25,
+          "props": { "inTitleBar": true, "titleBarSide": "free", "titleBarX": 137, "hint": "Buscar…", "defaultString": "" }
+        },
+        {
+          "id": "chrome_body",
+          "type": "text",
+          "label": "Contenido",
+          "varName": "chrome_body",
+          "props": { "text": "Contenido del panel. La barra de título queda arriba." }
+        }
+      ]
+    },
+    {
+      "id": "plain",
+      "type": "window",
+      "label": "Sin barra de título",
+      "varName": "plain_open",
+      "x": 40,
+      "y": 350,
+      "width": 400,
+      "height": 160,
+      "props": { "windowFlags": ["ImGuiWindowFlags_NoTitleBar"] },
+      "children": [
+        {
+          "id": "plain_body",
+          "type": "text",
+          "label": "Contenido",
+          "varName": "plain_body",
+          "props": { "text": "Ventana secundaria con el estilo general del proyecto." }
+        }
+      ]
+    }
+  ]
+}

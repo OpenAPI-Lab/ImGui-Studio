@@ -1,0 +1,64 @@
+{
+  "name": "MiInterfazImGui",
+  "style": {
+    "preset": "dark",
+    "windowRounding": 4,
+    "childRounding": 3,
+    "frameRounding": 3,
+    "grabRounding": 3,
+    "tabRounding": 4,
+    "scrollbarRounding": 6,
+    "windowPaddingX": 10,
+    "windowPaddingY": 10,
+    "framePaddingX": 6,
+    "framePaddingY": 4,
+    "itemSpacingX": 8,
+    "itemSpacingY": 6,
+    "windowBorderSize": 1,
+    "frameBorderSize": 0,
+    "alpha": 1,
+    "colors": {
+      "windowBg": "#16171a",
+      "childBg": "#121316",
+      "titleBg": "#1b1d22",
+      "titleBgActive": "#233a5c",
+      "frameBg": "#242b38",
+      "frameBgHovered": "#2f3a4d",
+      "button": "#2c4c7e",
+      "buttonHovered": "#3965a8",
+      "buttonActive": "#1f529e",
+      "accent": "#4296fa",
+      "checkMark": "#4296fa",
+      "sliderGrab": "#3d85e0",
+      "header": "#26446e",
+      "headerHovered": "#335d96",
+      "text": "#f2f4f8",
+      "textDisabled": "#808694",
+      "border": "#343945",
+      "separator": "#3b414f"
+    }
+  },
+  "canvas": {
+    "orientation": "landscape",
+    "canvasWidth": 1280,
+    "canvasHeight": 720
+  },
+  "nodes": [
+    {
+      "id": "win_main",
+      "type": "window",
+      "label": "Mi Ventana",
+      "varName": "show_main",
+      "visible": true,
+      "x": 48,
+      "y": 48,
+      "width": 380,
+      "height": 360,
+      "sameLine": false,
+      "props": {
+        "windowFlags": []
+      },
+      "children": []
+    }
+  ]
+}

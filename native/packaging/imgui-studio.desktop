@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ImGui Studio
+Comment=Design native Dear ImGui interfaces
+Exec=imgui_studio
+Icon=imgui-studio
+Terminal=false
+Categories=Development;IDE;

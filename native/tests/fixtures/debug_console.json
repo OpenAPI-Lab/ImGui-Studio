@@ -1,0 +1,185 @@
+{
+  "name": "DebugConsole",
+  "style": {
+    "preset": "nordic",
+    "windowRounding": 5,
+    "childRounding": 4,
+    "frameRounding": 3,
+    "grabRounding": 3,
+    "tabRounding": 4,
+    "scrollbarRounding": 6,
+    "windowPaddingX": 10,
+    "windowPaddingY": 10,
+    "framePaddingX": 7,
+    "framePaddingY": 4,
+    "itemSpacingX": 8,
+    "itemSpacingY": 6,
+    "windowBorderSize": 1,
+    "frameBorderSize": 0,
+    "alpha": 1,
+    "colors": {
+      "windowBg": "#2e3440",
+      "childBg": "#272c36",
+      "titleBg": "#3b4252",
+      "titleBgActive": "#434c5e",
+      "frameBg": "#3b4252",
+      "frameBgHovered": "#434c5e",
+      "button": "#4c566a",
+      "buttonHovered": "#5e81ac",
+      "buttonActive": "#88c0d0",
+      "accent": "#88c0d0",
+      "checkMark": "#8fbcbb",
+      "sliderGrab": "#88c0d0",
+      "header": "#434c5e",
+      "headerHovered": "#4c566a",
+      "text": "#eceff4",
+      "textDisabled": "#9aa5b8",
+      "border": "#4c566a",
+      "separator": "#4c566a"
+    }
+  },
+  "canvas": {
+    "orientation": "landscape",
+    "canvasWidth": 1280,
+    "canvasHeight": 720
+  },
+  "nodes": [
+    {
+      "id": "win_console",
+      "type": "window",
+      "label": "Consola de Motor",
+      "varName": "show_console",
+      "visible": true,
+      "x": 48,
+      "y": 44,
+      "width": 480,
+      "height": 380,
+      "sameLine": false,
+      "props": {
+        "windowFlags": []
+      },
+      "children": [
+        {
+          "id": "inp_cmd",
+          "type": "input_text",
+          "label": "Comando",
+          "varName": "cmd_buffer",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultString": "r_shadows 2048",
+            "hint": "Escribe un comando..."
+          }
+        },
+        {
+          "id": "btn_exec",
+          "type": "button",
+          "label": "Ejecutar",
+          "varName": "btn_exec",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 85,
+          "height": 0,
+          "sameLine": true,
+          "props": {}
+        },
+        {
+          "id": "child_log",
+          "type": "child",
+          "label": "LogRegion",
+          "varName": "log_region",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 170,
+          "sameLine": false,
+          "props": {
+            "border": true
+          },
+          "children": [
+            {
+              "id": "log_1",
+              "type": "text_colored",
+              "label": "[INFO] Inicializando contexto OpenGL 4.6",
+              "varName": "log_1",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {
+                "text": "[INFO] Inicializando contexto OpenGL 4.6",
+                "color": "#88c0d0"
+              }
+            },
+            {
+              "id": "log_2",
+              "type": "text",
+              "label": "[OK] Shaders PBR compilados en 42 ms",
+              "varName": "log_2",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {
+                "text": "[OK] Shaders PBR compilados en 42 ms"
+              }
+            },
+            {
+              "id": "log_3",
+              "type": "text_colored",
+              "label": "[WARN] Textura diffuse_wall sin mipmaps",
+              "varName": "log_3",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {
+                "text": "[WARN] Textura diffuse_wall sin mipmaps",
+                "color": "#ebcb8b"
+              }
+            }
+          ]
+        },
+        {
+          "id": "hist_cpu",
+          "type": "plot_histogram",
+          "label": "Hilos CPU",
+          "varName": "cpu_threads",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 60,
+          "sameLine": false,
+          "props": {
+            "plotValues": [
+              0.32,
+              0.78,
+              0.45,
+              0.62,
+              0.25,
+              0.51,
+              0.82,
+              0.41
+            ],
+            "min": 0,
+            "max": 1,
+            "overlay": "Uso por núcleo"
+          }
+        }
+      ]
+    }
+  ]
+}

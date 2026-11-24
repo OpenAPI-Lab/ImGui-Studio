@@ -1,0 +1,68 @@
+{
+  "name": "Barra y lienzo libre",
+  "style": { "preset": "dark" },
+  "canvas": { "orientation": "landscape", "canvasWidth": 960, "canvasHeight": 600 },
+  "nodes": [
+    {
+      "id": "demo_window",
+      "type": "window",
+      "label": "Panel de actividad",
+      "varName": "show_activity",
+      "x": 24,
+      "y": 32,
+      "width": 600,
+      "height": 390,
+      "props": {
+        "showCollapseArrow": false,
+        "titleBarHeight": 34,
+        "titleBarOffsetLeft": 12,
+        "titleBarOffsetRight": 36,
+        "titleBarSeparator": true
+      },
+      "children": [
+        {
+          "id": "demo_menu",
+          "type": "menu_bar",
+          "label": "Menú de actividad",
+          "varName": "activity_menu",
+          "props": {
+            "menuBarEdge": "titlebar",
+            "titleBarSide": "right",
+            "items": ["Archivo", "Vista"]
+          }
+        },
+        {
+          "id": "demo_status",
+          "type": "text",
+          "label": "Estado",
+          "varName": "activity_status",
+          "props": { "text": "Supervisión en curso" }
+        },
+        {
+          "id": "demo_separator",
+          "type": "separator_text",
+          "label": "Procesos",
+          "varName": "processes_divider",
+          "x": 208,
+          "y": 112,
+          "width": 176,
+          "height": 24,
+          "useCursorPos": true,
+          "props": { "utilityCustomSize": true }
+        },
+        {
+          "id": "demo_spacing",
+          "type": "spacing",
+          "label": "Espaciador libre",
+          "varName": "reserved_space",
+          "x": 16,
+          "y": 240,
+          "width": 140,
+          "height": 32,
+          "useCursorPos": true,
+          "props": { "utilityCustomSize": true }
+        }
+      ]
+    }
+  ]
+}

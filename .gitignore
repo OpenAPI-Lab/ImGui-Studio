@@ -1,0 +1,11 @@
+build/
+cmake-build-*/
+CMakeUserPresets.json
+.cxx/
+.gradle/
+.idea/
+.vs/
+__pycache__/
+.DS_Store
+*.log
+.env*

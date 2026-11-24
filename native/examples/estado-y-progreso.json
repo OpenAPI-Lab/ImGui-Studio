@@ -1,0 +1,51 @@
+{
+  "name": "Estado y progreso",
+  "style": { "preset": "dark" },
+  "canvas": { "orientation": "landscape", "canvasWidth": 960, "canvasHeight": 600 },
+  "nodes": [
+    {
+      "id": "status_window",
+      "type": "window",
+      "label": "Monitor de actividad",
+      "varName": "show_status",
+      "x": 28,
+      "y": 28,
+      "width": 480,
+      "height": 275,
+      "props": {},
+      "children": [
+        {
+          "id": "auto_toggle",
+          "type": "toggle",
+          "label": "Modo automático",
+          "varName": "automatic",
+          "width": 46,
+          "height": 24,
+          "props": { "defaultBool": true }
+        },
+        {
+          "id": "sync_spinner",
+          "type": "spinner",
+          "label": "Sincronizando",
+          "varName": "synchronizing",
+          "x": 20,
+          "y": 92,
+          "width": 48,
+          "useCursorPos": true,
+          "props": { "speed": 0.9, "progressFillColorOverride": "#4ac6f0" }
+        },
+        {
+          "id": "job_progress",
+          "type": "circular_progress",
+          "label": "Procesado",
+          "varName": "processing",
+          "x": 174,
+          "y": 78,
+          "width": 96,
+          "useCursorPos": true,
+          "props": { "fraction": 0.65, "overlay": "65 %", "progressFillColorOverride": "#55ce95" }
+        }
+      ]
+    }
+  ]
+}

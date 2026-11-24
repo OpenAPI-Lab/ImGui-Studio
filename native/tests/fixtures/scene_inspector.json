@@ -1,0 +1,435 @@
+{
+  "name": "SceneInspectorUI",
+  "style": {
+    "preset": "dark",
+    "windowRounding": 4,
+    "childRounding": 3,
+    "frameRounding": 3,
+    "grabRounding": 3,
+    "tabRounding": 4,
+    "scrollbarRounding": 6,
+    "windowPaddingX": 10,
+    "windowPaddingY": 10,
+    "framePaddingX": 6,
+    "framePaddingY": 4,
+    "itemSpacingX": 8,
+    "itemSpacingY": 6,
+    "windowBorderSize": 1,
+    "frameBorderSize": 0,
+    "alpha": 1,
+    "colors": {
+      "windowBg": "#16171a",
+      "childBg": "#121316",
+      "titleBg": "#1b1d22",
+      "titleBgActive": "#233a5c",
+      "frameBg": "#242b38",
+      "frameBgHovered": "#2f3a4d",
+      "button": "#2c4c7e",
+      "buttonHovered": "#3965a8",
+      "buttonActive": "#1f529e",
+      "accent": "#4296fa",
+      "checkMark": "#4296fa",
+      "sliderGrab": "#3d85e0",
+      "header": "#26446e",
+      "headerHovered": "#335d96",
+      "text": "#f2f4f8",
+      "textDisabled": "#808694",
+      "border": "#343945",
+      "separator": "#3b414f"
+    }
+  },
+  "canvas": {
+    "orientation": "landscape",
+    "canvasWidth": 1280,
+    "canvasHeight": 720
+  },
+  "nodes": [
+    {
+      "id": "win_inspector",
+      "type": "window",
+      "label": "Inspector de Escena",
+      "varName": "show_inspector",
+      "visible": true,
+      "x": 36,
+      "y": 36,
+      "width": 340,
+      "height": 500,
+      "sameLine": false,
+      "props": {
+        "windowFlags": []
+      },
+      "children": [
+        {
+          "id": "txt_entity",
+          "type": "input_text",
+          "label": "Entidad",
+          "varName": "entity_name",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultString": "Camera_Main",
+            "hint": "Nombre de entidad"
+          }
+        },
+        {
+          "id": "chk_active",
+          "type": "checkbox",
+          "label": "Activa en Escena",
+          "varName": "entity_active",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultBool": true
+          }
+        },
+        {
+          "id": "tabs_props",
+          "type": "tab_bar",
+          "label": "InspectorTabs",
+          "varName": "inspector_tabs",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {},
+          "children": [
+            {
+              "id": "tab_transform",
+              "type": "tab_item",
+              "label": "Transform",
+              "varName": "tab_transform",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {},
+              "children": [
+                {
+                  "id": "drag_px",
+                  "type": "drag_float",
+                  "label": "Posición X",
+                  "varName": "pos_x",
+                  "visible": true,
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "sameLine": false,
+                  "props": {
+                    "defaultNumber": 2.5,
+                    "min": -100,
+                    "max": 100,
+                    "speed": 0.1,
+                    "format": "%.2f"
+                  }
+                },
+                {
+                  "id": "drag_py",
+                  "type": "drag_float",
+                  "label": "Posición Y",
+                  "varName": "pos_y",
+                  "visible": true,
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "sameLine": false,
+                  "props": {
+                    "defaultNumber": 4,
+                    "min": -100,
+                    "max": 100,
+                    "speed": 0.1,
+                    "format": "%.2f"
+                  }
+                },
+                {
+                  "id": "slider_fov",
+                  "type": "slider_float",
+                  "label": "FOV Cámara",
+                  "varName": "camera_fov",
+                  "visible": true,
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "sameLine": false,
+                  "props": {
+                    "defaultNumber": 60,
+                    "min": 20,
+                    "max": 120,
+                    "format": "%.1f deg"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "tab_material",
+              "type": "tab_item",
+              "label": "Material",
+              "varName": "tab_material",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {},
+              "children": [
+                {
+                  "id": "col_albedo",
+                  "type": "color_edit3",
+                  "label": "Albedo Base",
+                  "varName": "mat_albedo",
+                  "visible": true,
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "sameLine": false,
+                  "props": {
+                    "defaultColor": [
+                      0.26,
+                      0.59,
+                      0.98,
+                      1
+                    ]
+                  }
+                },
+                {
+                  "id": "slider_rough",
+                  "type": "slider_float",
+                  "label": "Rugosidad",
+                  "varName": "mat_roughness",
+                  "visible": true,
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0,
+                  "sameLine": false,
+                  "props": {
+                    "defaultNumber": 0.35,
+                    "min": 0,
+                    "max": 1,
+                    "format": "%.2f"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hdr_lighting",
+          "type": "collapsing_header",
+          "label": "Iluminación y Sombras",
+          "varName": "hdr_lighting",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultOpen": true
+          },
+          "children": [
+            {
+              "id": "cmb_shadows",
+              "type": "combo",
+              "label": "Resolución Sombras",
+              "varName": "shadow_res",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {
+                "items": [
+                  "512px",
+                  "1024px",
+                  "2048px",
+                  "4096px"
+                ],
+                "selectedIndex": 2
+              }
+            },
+            {
+              "id": "chk_bloom",
+              "type": "checkbox",
+              "label": "Post-proceso Bloom",
+              "varName": "enable_bloom",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {
+                "defaultBool": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "sep_actions",
+          "type": "separator",
+          "label": "Separador",
+          "varName": "sep_1",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "btn_reset",
+          "type": "button",
+          "label": "Restablecer",
+          "varName": "btn_reset",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 140,
+          "height": 28,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "btn_apply",
+          "type": "button",
+          "label": "Aplicar Cambios",
+          "varName": "btn_apply",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 28,
+          "sameLine": true,
+          "props": {}
+        }
+      ]
+    },
+    {
+      "id": "win_perf",
+      "type": "window",
+      "label": "Telemetría de Render",
+      "varName": "show_perf",
+      "visible": true,
+      "x": 404,
+      "y": 36,
+      "width": 310,
+      "height": 296,
+      "sameLine": false,
+      "props": {
+        "windowFlags": []
+      },
+      "children": [
+        {
+          "id": "txt_fps",
+          "type": "text_colored",
+          "label": "Backend: Vulkan 1.3 · 144 FPS",
+          "varName": "txt_fps",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "text": "Backend: Vulkan 1.3 · 144 FPS",
+            "color": "#4ade80"
+          }
+        },
+        {
+          "id": "plot_ft",
+          "type": "plot_lines",
+          "label": "Frame Time",
+          "varName": "frame_times",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 68,
+          "sameLine": false,
+          "props": {
+            "plotValues": [
+              6.8,
+              6.9,
+              7.1,
+              6.7,
+              6.8,
+              7.4,
+              6.9,
+              6.8,
+              6.6,
+              7,
+              6.8,
+              6.7
+            ],
+            "min": 4,
+            "max": 12,
+            "overlay": "6.9 ms/frame"
+          }
+        },
+        {
+          "id": "sep_vram",
+          "type": "separator_text",
+          "label": "Memoria GPU",
+          "varName": "sep_vram",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "prog_vram",
+          "type": "progress_bar",
+          "label": "VRAM",
+          "varName": "vram_usage",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 20,
+          "sameLine": false,
+          "props": {
+            "fraction": 0.54,
+            "overlay": "4.3 / 8.0 GB VRAM"
+          }
+        },
+        {
+          "id": "chk_vsync",
+          "type": "checkbox",
+          "label": "Sincronización Vertical (V-Sync)",
+          "varName": "vsync_enabled",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultBool": false
+          }
+        }
+      ]
+    }
+  ]
+}

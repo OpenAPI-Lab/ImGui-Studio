@@ -1,0 +1,1160 @@
+{
+  "name": "Compatibility - all prototype widgets",
+  "style": {
+    "preset": "dark",
+    "windowRounding": 4,
+    "childRounding": 3,
+    "frameRounding": 3,
+    "grabRounding": 3,
+    "tabRounding": 4,
+    "scrollbarRounding": 6,
+    "windowPaddingX": 10,
+    "windowPaddingY": 10,
+    "framePaddingX": 6,
+    "framePaddingY": 4,
+    "itemSpacingX": 8,
+    "itemSpacingY": 6,
+    "windowBorderSize": 1,
+    "frameBorderSize": 0,
+    "alpha": 1,
+    "colors": {
+      "windowBg": "#16171a",
+      "childBg": "#121316",
+      "titleBg": "#1b1d22",
+      "titleBgActive": "#233a5c",
+      "frameBg": "#242b38",
+      "frameBgHovered": "#2f3a4d",
+      "button": "#2c4c7e",
+      "buttonHovered": "#3965a8",
+      "buttonActive": "#1f529e",
+      "accent": "#4296fa",
+      "checkMark": "#4296fa",
+      "sliderGrab": "#3d85e0",
+      "header": "#26446e",
+      "headerHovered": "#335d96",
+      "text": "#f2f4f8",
+      "textDisabled": "#808694",
+      "border": "#343945",
+      "separator": "#3b414f"
+    }
+  },
+  "canvas": {
+    "orientation": "free",
+    "canvasWidth": 1280,
+    "canvasHeight": 720
+  },
+  "nodes": [
+    {
+      "id": "win_main",
+      "type": "window",
+      "label": "Mi Ventana",
+      "varName": "show_main",
+      "visible": true,
+      "x": 48,
+      "y": 48,
+      "width": 380,
+      "height": 360,
+      "sameLine": false,
+      "props": {
+        "windowFlags": []
+      },
+      "children": [
+        {
+          "id": "child_6m6ilur",
+          "type": "child",
+          "label": "Panel_ilur",
+          "varName": "child_ilur",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 140,
+          "sameLine": false,
+          "props": {
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "collapsing_header_qu0q23a",
+          "type": "collapsing_header",
+          "label": "Sección",
+          "varName": "header_q23a",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultOpen": true
+          },
+          "children": []
+        },
+        {
+          "id": "tree_node_u3qre7b",
+          "type": "tree_node",
+          "label": "Objeto Raíz",
+          "varName": "tree_re7b",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultOpen": true
+          },
+          "children": []
+        },
+        {
+          "id": "tab_bar_wf1glvc",
+          "type": "tab_bar",
+          "label": "Tabs_glvc",
+          "varName": "tabs_glvc",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {},
+          "children": [
+            {
+              "id": "tab_item_w8g5mlq",
+              "type": "tab_item",
+              "label": "General",
+              "varName": "tab_general_glvc",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {},
+              "children": []
+            },
+            {
+              "id": "tab_item_vn8uufm",
+              "type": "tab_item",
+              "label": "Avanzado",
+              "varName": "tab_avanzado_glvc",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "sameLine": false,
+              "props": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "group_zldif0w",
+          "type": "group",
+          "label": "Grupo",
+          "varName": "group_if0w",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {},
+          "children": []
+        },
+        {
+          "id": "table_jnlr1kp",
+          "type": "table",
+          "label": "Tabla_r1kp",
+          "varName": "table_r1kp",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 120,
+          "sameLine": false,
+          "props": {
+            "columns": [
+              "Propiedad",
+              "Valor",
+              "Estado"
+            ],
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "menu_bar_92gon64",
+          "type": "menu_bar",
+          "label": "MenuBar",
+          "varName": "menu_on64",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "Archivo",
+              "Editar",
+              "Ver",
+              "Ayuda"
+            ],
+            "menuBarEdge": "top",
+            "menuBarThickness": 88
+          }
+        },
+        {
+          "id": "title_bar_button_74hn42x",
+          "type": "title_bar_button",
+          "label": "Update",
+          "varName": "tb_btn_n42x",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 24,
+          "sameLine": false,
+          "props": {
+            "titleBarSide": "left",
+            "titleBarBtnVariant": "pill",
+            "titleBarIcon": "sparkles",
+            "buttonColorOverride": "#2563eb",
+            "textColorOverride": "#ffffff",
+            "titleBarBtnRounding": 999
+          }
+        },
+        {
+          "id": "positioner_column_r0vufkz",
+          "type": "positioner_column",
+          "label": "Column",
+          "varName": "col_ufkz",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "spacing": 6,
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "positioner_row_bqqj93c",
+          "type": "positioner_row",
+          "label": "Row",
+          "varName": "row_j93c",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "spacing": 8,
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "positioner_flow_jf637r9",
+          "type": "positioner_flow",
+          "label": "Flow",
+          "varName": "flow_37r9",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "spacing": 6,
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "positioner_grid_4nftjmk",
+          "type": "positioner_grid",
+          "label": "Grid",
+          "varName": "grid_tjmk",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "gridColumns": 2,
+            "spacing": 6,
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "list_view_e873nk0",
+          "type": "list_view",
+          "label": "ListView",
+          "varName": "listview_3nk0",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 120,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "Camera_Main",
+              "Directional_Light",
+              "Terrain_Mesh",
+              "Sky_Atmosphere"
+            ],
+            "selectedIndex": 0,
+            "border": true
+          }
+        },
+        {
+          "id": "grid_view_1y4rrt3",
+          "type": "grid_view",
+          "label": "GridView",
+          "varName": "gridview_rrt3",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 140,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "Material_01",
+              "Shader_PBR",
+              "Texture_HDR",
+              "Mesh_Cube",
+              "Audio_SFX",
+              "Prefab_HUD"
+            ],
+            "gridColumns": 3,
+            "selectedIndex": 0,
+            "spacing": 6,
+            "border": true
+          }
+        },
+        {
+          "id": "path_view_zs119kk",
+          "type": "path_view",
+          "label": "PathView",
+          "varName": "pathview_19kk",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 124,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "Vista Frontal",
+              "Perspectiva",
+              "Wireframe",
+              "Sombras",
+              "Post-Proceso"
+            ],
+            "selectedIndex": 2,
+            "border": true
+          }
+        },
+        {
+          "id": "loader_dhin8a1",
+          "type": "loader",
+          "label": "Loader",
+          "varName": "loader_n8a1",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "sourceComponent": "PanelDetalles",
+            "loaderActive": true,
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "component_bvmb20i",
+          "type": "component",
+          "label": "Component",
+          "varName": "comp_b20i",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "sourceComponent": "TarjetaControl_b20i",
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "repeater_eru5a1f",
+          "type": "repeater",
+          "label": "Repeater",
+          "varName": "rep_5a1f",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "repeatCount": 3,
+            "spacing": 4,
+            "border": true
+          },
+          "children": []
+        },
+        {
+          "id": "animation_txawb1a",
+          "type": "animation",
+          "label": "Animación",
+          "varName": "anim_wb1a",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "animType": "pulse_alpha",
+            "animDuration": 1400,
+            "animEasing": "sine",
+            "animLoop": true,
+            "animRunning": true
+          },
+          "children": []
+        },
+        {
+          "id": "button_4i0xreo",
+          "type": "button",
+          "label": "Aplicar",
+          "varName": "btn_xreo",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "small_button_7flaw9v",
+          "type": "small_button",
+          "label": "Editar",
+          "varName": "sbtn_aw9v",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "arrow_button_4j13qxa",
+          "type": "arrow_button",
+          "label": "arrow_3qxa",
+          "varName": "arrow_3qxa",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "arrowDir": "right"
+          }
+        },
+        {
+          "id": "image_button_59m075t",
+          "type": "image_button",
+          "label": "imgbtn_075t",
+          "varName": "imgbtn_075t",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 64,
+          "height": 48,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "color_button_ebuqba6",
+          "type": "color_button",
+          "label": "Color",
+          "varName": "colbtn_qba6",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 32,
+          "height": 24,
+          "sameLine": false,
+          "props": {
+            "defaultColor": [
+              0.26,
+              0.59,
+              0.98,
+              1
+            ]
+          }
+        },
+        {
+          "id": "selectable_nc6m3l3",
+          "type": "selectable",
+          "label": "Elemento seleccionable",
+          "varName": "sel_m3l3",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 24,
+          "sameLine": false,
+          "props": {
+            "selected": false
+          }
+        },
+        {
+          "id": "checkbox_mwkodpv",
+          "type": "checkbox",
+          "label": "Habilitar opción",
+          "varName": "enable_odpv",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultBool": true
+          }
+        },
+        {
+          "id": "radio_az0k28w",
+          "type": "radio",
+          "label": "Modo A",
+          "varName": "selected_mode",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "radioValue": 0,
+            "defaultNumber": 0
+          }
+        },
+        {
+          "id": "text_a32bfo7",
+          "type": "text",
+          "label": "Etiqueta de texto",
+          "varName": "txt_bfo7",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "text": "Etiqueta de texto"
+          }
+        },
+        {
+          "id": "text_colored_zzmd1e6",
+          "type": "text_colored",
+          "label": "Estado: Nominal",
+          "varName": "txt_col_d1e6",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "text": "Estado: Nominal",
+            "color": "#4ade80"
+          }
+        },
+        {
+          "id": "text_wrapped_babwbqo",
+          "type": "text_wrapped",
+          "label": "Descripción extensa",
+          "varName": "txt_wrap_wbqo",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "text": "Este bloque se ajusta automáticamente al ancho disponible del contenedor ImGui."
+          }
+        },
+        {
+          "id": "bullet_text_21s164s",
+          "type": "bullet_text",
+          "label": "Elemento de lista",
+          "varName": "bullet_164s",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "text": "Elemento de lista"
+          }
+        },
+        {
+          "id": "help_marker_75gi0o3",
+          "type": "help_marker",
+          "label": "(?)",
+          "varName": "help_i0o3",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": true,
+          "props": {
+            "text": "Descripción contextual para este control."
+          }
+        },
+        {
+          "id": "separator_dyq84k9",
+          "type": "separator",
+          "label": "Separador",
+          "varName": "sep_84k9",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "separator_text_dqfxs15",
+          "type": "separator_text",
+          "label": "Parámetros",
+          "varName": "septxt_xs15",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "spacing_dqlbmxu",
+          "type": "spacing",
+          "label": "Espaciado",
+          "varName": "space_bmxu",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "dummy_7z444l4",
+          "type": "dummy",
+          "label": "Dummy",
+          "varName": "dummy_44l4",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 80,
+          "height": 24,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "input_text_nubi0n5",
+          "type": "input_text",
+          "label": "Nombre",
+          "varName": "name_i0n5",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultString": "Entidad_01",
+            "hint": "Escribe aquí..."
+          }
+        },
+        {
+          "id": "input_multiline_jn9d8r0",
+          "type": "input_multiline",
+          "label": "Notas",
+          "varName": "notes_d8r0",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 76,
+          "sameLine": false,
+          "props": {
+            "defaultString": "// Comentario de escena\nrender_pass = forward;"
+          }
+        },
+        {
+          "id": "input_int_oy6a7a7",
+          "type": "input_int",
+          "label": "Iteraciones",
+          "varName": "count_a7a7",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 16
+          }
+        },
+        {
+          "id": "input_float_pbijhyp",
+          "type": "input_float",
+          "label": "Escala",
+          "varName": "scale_jhyp",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 1,
+            "format": "%.3f"
+          }
+        },
+        {
+          "id": "slider_float_uzkzg5t",
+          "type": "slider_float",
+          "label": "Intensidad",
+          "varName": "intensity_zg5t",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 0.65,
+            "min": 0,
+            "max": 1,
+            "format": "%.2f"
+          }
+        },
+        {
+          "id": "slider_float2_vnvchlj",
+          "type": "slider_float2",
+          "label": "Escala UV",
+          "varName": "vec2_chlj",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultVec": [
+              1,
+              1
+            ],
+            "min": 0,
+            "max": 10,
+            "format": "%.2f"
+          }
+        },
+        {
+          "id": "slider_float3_uh5rxhe",
+          "type": "slider_float3",
+          "label": "Dirección Luz",
+          "varName": "vec3_rxhe",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultVec": [
+              0.4,
+              -0.8,
+              0.2
+            ],
+            "min": -1,
+            "max": 1,
+            "format": "%.2f"
+          }
+        },
+        {
+          "id": "slider_int_ee30673",
+          "type": "slider_int",
+          "label": "Resolución",
+          "varName": "samples_0673",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 4,
+            "min": 1,
+            "max": 16
+          }
+        },
+        {
+          "id": "slider_angle_0d7ngkn",
+          "type": "slider_angle",
+          "label": "Rotación",
+          "varName": "angle_ngkn",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 0.785,
+            "min": -360,
+            "max": 360,
+            "format": "%.0f deg"
+          }
+        },
+        {
+          "id": "drag_float_09k51vu",
+          "type": "drag_float",
+          "label": "Posición X",
+          "varName": "pos_x_51vu",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 12.5,
+            "min": -100,
+            "max": 100,
+            "speed": 0.1,
+            "format": "%.2f"
+          }
+        },
+        {
+          "id": "drag_float3_r8r6qzv",
+          "type": "drag_float3",
+          "label": "Transform XYZ",
+          "varName": "pos3_6qzv",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultVec": [
+              0,
+              2.5,
+              -5
+            ],
+            "min": -500,
+            "max": 500,
+            "speed": 0.1,
+            "format": "%.2f"
+          }
+        },
+        {
+          "id": "drag_int_ss863bt",
+          "type": "drag_int",
+          "label": "Capas",
+          "varName": "layers_63bt",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 4,
+            "min": 0,
+            "max": 64,
+            "speed": 1
+          }
+        },
+        {
+          "id": "combo_dixbmzc",
+          "type": "combo",
+          "label": "Calidad",
+          "varName": "quality_bmzc",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "Baja",
+              "Media",
+              "Alta",
+              "Ultra"
+            ],
+            "selectedIndex": 2
+          }
+        },
+        {
+          "id": "listbox_6txpewi",
+          "type": "listbox",
+          "label": "Escenas",
+          "varName": "list_pewi",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 92,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "Main_Level",
+              "Lighting_Test",
+              "Shader_Ball",
+              "UI_Sandbox"
+            ],
+            "selectedIndex": 0
+          }
+        },
+        {
+          "id": "color_edit3_g272lcq",
+          "type": "color_edit3",
+          "label": "Albedo",
+          "varName": "albedo_2lcq",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultColor": [
+              0.24,
+              0.56,
+              0.94,
+              1
+            ]
+          }
+        },
+        {
+          "id": "color_edit4_inyaytr",
+          "type": "color_edit4",
+          "label": "Color Tint",
+          "varName": "tint_aytr",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultColor": [
+              0.95,
+              0.42,
+              0.22,
+              0.85
+            ]
+          }
+        },
+        {
+          "id": "progress_bar_nycvlsh",
+          "type": "progress_bar",
+          "label": "Progreso",
+          "varName": "progress_vlsh",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 20,
+          "sameLine": false,
+          "props": {
+            "fraction": 0.68,
+            "overlay": "68%"
+          }
+        },
+        {
+          "id": "plot_lines_1v2d9cw",
+          "type": "plot_lines",
+          "label": "Frame Time (ms)",
+          "varName": "frametimes_d9cw",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 64,
+          "sameLine": false,
+          "props": {
+            "plotValues": [
+              16.2,
+              16.5,
+              15.8,
+              17.1,
+              16.4,
+              16,
+              15.9,
+              18.2,
+              16.6,
+              16.1,
+              16.3,
+              15.7
+            ],
+            "min": 10,
+            "max": 24,
+            "overlay": "avg 16.3 ms"
+          }
+        },
+        {
+          "id": "plot_histogram_85qjvy8",
+          "type": "plot_histogram",
+          "label": "Carga GPU",
+          "varName": "gpu_hist_jvy8",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 64,
+          "sameLine": false,
+          "props": {
+            "plotValues": [
+              0.42,
+              0.58,
+              0.71,
+              0.64,
+              0.85,
+              0.77,
+              0.52,
+              0.69,
+              0.74,
+              0.61
+            ],
+            "min": 0,
+            "max": 1,
+            "overlay": "Distribución"
+          }
+        },
+        {
+          "id": "chart_2d_oj7d4hy",
+          "type": "chart_2d",
+          "label": "Gráfica 2D",
+          "varName": "chart2d_d4hy",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 148,
+          "sameLine": false,
+          "props": {
+            "chart2dType": "line",
+            "plotValues": [
+              18,
+              32,
+              27,
+              54,
+              49,
+              72,
+              66,
+              84
+            ],
+            "chartLabels": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E",
+              "F"
+            ],
+            "color": "#38bdf8",
+            "overlay": "Serie 2D",
+            "min": 0,
+            "max": 100
+          }
+        },
+        {
+          "id": "chart_3d_w7u621j",
+          "type": "chart_3d",
+          "label": "Gráfica 3D",
+          "varName": "chart3d_621j",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": -1,
+          "height": 184,
+          "sameLine": false,
+          "props": {
+            "chart3dType": "bars",
+            "plotValues": [
+              0.35,
+              0.72,
+              0.54,
+              0.88,
+              0.62,
+              0.45,
+              0.91,
+              0.68,
+              0.52,
+              0.78,
+              0.41,
+              0.84
+            ],
+            "chart3dRotX": 28,
+            "chart3dRotY": -38,
+            "color": "#38bdf8",
+            "overlay": "Vista 3D"
+          }
+        },
+        {
+          "id": "image_21mw38y",
+          "type": "image",
+          "label": "Viewport Texture",
+          "varName": "tex_w38y",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 180,
+          "height": 108,
+          "sameLine": false,
+          "props": {}
+        }
+      ]
+    }
+  ],
+  "compatibilityMetadata": {
+    "revision": 1,
+    "preserve": [
+      "unknown root data",
+      0.123456789012345
+    ]
+  }
+}

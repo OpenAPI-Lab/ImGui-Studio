@@ -1,0 +1,236 @@
+{
+  "name": "GraphicsSettings",
+  "style": {
+    "preset": "slate_pro",
+    "windowRounding": 6,
+    "childRounding": 4,
+    "frameRounding": 4,
+    "grabRounding": 4,
+    "tabRounding": 4,
+    "scrollbarRounding": 6,
+    "windowPaddingX": 12,
+    "windowPaddingY": 10,
+    "framePaddingX": 8,
+    "framePaddingY": 4,
+    "itemSpacingX": 8,
+    "itemSpacingY": 6,
+    "windowBorderSize": 1,
+    "frameBorderSize": 1,
+    "alpha": 1,
+    "colors": {
+      "windowBg": "#181b22",
+      "childBg": "#13161c",
+      "titleBg": "#1f242d",
+      "titleBgActive": "#262d38",
+      "frameBg": "#232833",
+      "frameBgHovered": "#2c3342",
+      "button": "#2d3544",
+      "buttonHovered": "#3a4659",
+      "buttonActive": "#38bdf8",
+      "accent": "#38bdf8",
+      "checkMark": "#38bdf8",
+      "sliderGrab": "#38bdf8",
+      "header": "#272f3d",
+      "headerHovered": "#313c4f",
+      "text": "#e6edf3",
+      "textDisabled": "#7d8590",
+      "border": "#30363d",
+      "separator": "#30363d"
+    }
+  },
+  "canvas": {
+    "orientation": "landscape",
+    "canvasWidth": 1280,
+    "canvasHeight": 720
+  },
+  "nodes": [
+    {
+      "id": "win_gfx",
+      "type": "window",
+      "label": "Configuración Gráfica",
+      "varName": "show_graphics",
+      "visible": true,
+      "x": 60,
+      "y": 44,
+      "width": 390,
+      "height": 410,
+      "sameLine": false,
+      "props": {
+        "windowFlags": []
+      },
+      "children": [
+        {
+          "id": "sep_disp",
+          "type": "separator_text",
+          "label": "Pantalla",
+          "varName": "sep_disp",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "cmb_res",
+          "type": "combo",
+          "label": "Resolución",
+          "varName": "resolution_idx",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "items": [
+              "1280x720",
+              "1920x1080",
+              "2560x1440",
+              "3840x2160"
+            ],
+            "selectedIndex": 1
+          }
+        },
+        {
+          "id": "sld_scale",
+          "type": "slider_float",
+          "label": "Escala de Render",
+          "varName": "render_scale",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 1,
+            "min": 0.5,
+            "max": 2,
+            "format": "%.2fx"
+          }
+        },
+        {
+          "id": "sep_fx",
+          "type": "separator_text",
+          "label": "Calidad Visual",
+          "varName": "sep_fx",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "sld_msaa",
+          "type": "slider_int",
+          "label": "Muestras MSAA",
+          "varName": "msaa_samples",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultNumber": 4,
+            "min": 1,
+            "max": 8
+          }
+        },
+        {
+          "id": "chk_ssao",
+          "type": "checkbox",
+          "label": "Oclusión Ambiental (SSAO)",
+          "varName": "enable_ssao",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultBool": true
+          }
+        },
+        {
+          "id": "chk_ssr",
+          "type": "checkbox",
+          "label": "Reflejos en Espacio de Pantalla",
+          "varName": "enable_ssr",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultBool": false
+          }
+        },
+        {
+          "id": "col_fog",
+          "type": "color_edit4",
+          "label": "Niebla Atmosférica",
+          "varName": "fog_color",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {
+            "defaultColor": [
+              0.48,
+              0.62,
+              0.78,
+              0.35
+            ]
+          }
+        },
+        {
+          "id": "sep_end",
+          "type": "separator",
+          "label": "Separador",
+          "varName": "sep_end",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "btn_save_gfx",
+          "type": "button",
+          "label": "Guardar Perfil",
+          "varName": "btn_save_gfx",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 150,
+          "height": 30,
+          "sameLine": false,
+          "props": {}
+        },
+        {
+          "id": "btn_cancel_gfx",
+          "type": "button",
+          "label": "Descartar",
+          "varName": "btn_cancel_gfx",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "width": 110,
+          "height": 30,
+          "sameLine": true,
+          "props": {}
+        }
+      ]
+    }
+  ]
+}

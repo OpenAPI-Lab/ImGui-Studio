@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application' version '8.7.3'
+}
+
+def studioNotices = layout.buildDirectory.dir('generated/studioNotices')
+def stageStudioNotices = tasks.register('stageStudioNotices', Sync) {
+    from(fileTree(projectDir) {
+        include 'LICENSE.dear-imgui.txt', 'LICENSE.imgui-knobs.txt'
+    })
+    into(studioNotices.map { it.dir('licenses') })
+}
+tasks.matching { it.name == 'preBuild' }.configureEach {
+    dependsOn(stageStudioNotices)
+}
+
+android {
+    namespace 'org.imguistudio.exported'
+    compileSdk 35
+    ndkVersion '27.2.12479018'
+
+    defaultConfig {
+        applicationId providers.gradleProperty('studioApplicationId').getOrElse('org.imguistudio.exported')
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+        ndk {
+            abiFilters 'arm64-v8a', 'x86_64'
+        }
+    }
+
+    sourceSets {
+        main.manifest.srcFile 'AndroidManifest.xml'
+        main.assets.srcDir studioNotices
+    }
+
+    externalNativeBuild {
+        cmake {
+            path file('CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
+}

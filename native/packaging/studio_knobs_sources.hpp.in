@@ -1,0 +1,24 @@
+#pragma once
+
+#include <array>
+#include <string_view>
+
+namespace ImGuiStudio::KnobsSource {
+
+inline constexpr char revision[] = "6b4b5923129c1e8fa4cd30f8c59439643d44f22f";
+inline constexpr char repository[] = "https://github.com/altschuler/imgui-knobs";
+inline constexpr char sourceBase[] =
+  "https://raw.githubusercontent.com/altschuler/imgui-knobs/6b4b5923129c1e8fa4cd30f8c59439643d44f22f/";
+
+struct File {
+  const char* name;
+  std::string_view contents;
+};
+
+inline constexpr std::array<File, 3> files{{
+  {"LICENSE", R"STUDIO_KNOBS(@STUDIO_KNOBS_LICENSE@)STUDIO_KNOBS"},
+  {"imgui-knobs.h", R"STUDIO_KNOBS(@STUDIO_KNOBS_HEADER@)STUDIO_KNOBS"},
+  {"imgui-knobs.cpp", R"STUDIO_KNOBS(@STUDIO_KNOBS_SOURCE@)STUDIO_KNOBS"},
+}};
+
+} // namespace ImGuiStudio::KnobsSource
