@@ -2,6 +2,8 @@
 #include <string_view>
 
 namespace ImGuiStudio::VulkanSource {
-inline constexpr std::string_view renderer = R"STUDIO_VULKAN(@studio_vulkan_renderer@)STUDIO_VULKAN";
+inline constexpr std::string_view renderer =
+  R"STUDIO_VULKAN(@studio_vulkan_renderer_first@)STUDIO_VULKAN"
+  R"STUDIO_VULKAN(@studio_vulkan_renderer_last@)STUDIO_VULKAN";
 inline constexpr std::string_view images = R"STUDIO_VULKAN(@studio_vulkan_images@)STUDIO_VULKAN";
 }

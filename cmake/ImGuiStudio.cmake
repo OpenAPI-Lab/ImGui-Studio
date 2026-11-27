@@ -16,6 +16,11 @@ configure_file(packaging/studio_status_source.hpp.in generated/studio_status_sou
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
   templates/studio_vulkan.hpp templates/studio_vulkan_images.hpp)
 file(READ templates/studio_vulkan.hpp studio_vulkan_renderer)
+# MSVC limits each literal before concatenation. Split after a complete line
+# ending so checkouts using CRLF also preserve the emitted source.
+string(FIND "${studio_vulkan_renderer}" "    void idle() const" studio_vulkan_split)
+string(SUBSTRING "${studio_vulkan_renderer}" 0 ${studio_vulkan_split} studio_vulkan_renderer_first)
+string(SUBSTRING "${studio_vulkan_renderer}" ${studio_vulkan_split} -1 studio_vulkan_renderer_last)
 file(READ templates/studio_vulkan_images.hpp studio_vulkan_images)
 configure_file(packaging/studio_vulkan_source.hpp.in generated/studio_vulkan_source.hpp @ONLY NEWLINE_STYLE UNIX)
 target_include_directories(studio_core INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include "${CMAKE_CURRENT_BINARY_DIR}/generated")

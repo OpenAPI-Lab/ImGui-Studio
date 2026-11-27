@@ -176,7 +176,8 @@ def _draw_window_control(draw, lo, hi, kind, variant, hovered, held, restoring, 
             draw.add_line((x - size, y - size * 0.35), (x + size, y - size * 0.35), text)
 
 
-def _render_title_bar(state, title, buttons, appearance, open_key, mode):
+)PY"
+R"PY(def _render_title_bar(state, title, buttons, appearance, open_key, mode):
     internal = imgui.internal
     window = internal.get_current_window()
     style = imgui.get_style()
