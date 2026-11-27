@@ -1,0 +1,42 @@
+name: Repository checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    name: Core (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Check documentation
+        if: runner.os == 'Linux'
+        run: python3 tools/check_docs.py
+      - name: Configure Linux
+        if: runner.os == 'Linux'
+        run: cmake -S . -B build/check-core -G Ninja -DBUILD_STUDIO_GUI=OFF -DCMAKE_BUILD_TYPE=Debug
+      - name: Configure Windows
+        if: runner.os == 'Windows'
+        run: cmake -S . -B build/check-core -G "Visual Studio 17 2022" -A x64 -DBUILD_STUDIO_GUI=OFF
+      - name: Build core verification targets
+        env:
+          MSBUILDDISABLENODEREUSE: '1'
+        run: >-
+          cmake --build build/check-core --config Debug --parallel 1
+          --target verify_core verify_persistence verify_sessions verify_document_edit verify_codegen
+      - name: Run core and export generation tests
+        run: >-
+          ctest --test-dir build/check-core -C Debug --output-on-failure --no-tests=error
+          -R '^(CoreAndCodegenTest|ProjectPersistenceTest|SessionRecoveryTest|DocumentEditingTest|CppExportGenerationTest|AndroidCppExportGenerationTest|AppleCppExportGenerationTest)$'

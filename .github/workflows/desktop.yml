@@ -1,0 +1,64 @@
+name: Desktop build
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: Platform to verify
+        type: choice
+        required: true
+        default: ubuntu-24.04
+        options: [ubuntu-24.04, windows-2022, macos-15]
+
+permissions:
+  contents: read
+
+jobs:
+  desktop:
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 20
+    env:
+      MSBUILDDISABLENODEREUSE: '1'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Install Linux graphics dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgl-dev libgl1-mesa-dri libglx-mesa0 xorg-dev xvfb xauth
+      - name: Configure Linux
+        if: runner.os == 'Linux'
+        run: >-
+          cmake -S . -B build/desktop -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_CORE_TEST=OFF -DGLFW_BUILD_WAYLAND=OFF
+          -DSTUDIO_ASSISTANT_NETWORK=OFF -DSTUDIO_CATALOG_NETWORK=OFF -DSTUDIO_ASSISTANT_SECRET_SERVICE=OFF
+      - name: Configure Windows
+        if: runner.os == 'Windows'
+        run: >-
+          cmake -S . -B build/desktop -G "Visual Studio 17 2022" -A x64
+          -DBUILD_CORE_TEST=OFF -DSTUDIO_ASSISTANT_NETWORK=OFF -DSTUDIO_CATALOG_NETWORK=OFF
+      - name: Configure macOS
+        if: runner.os == 'macOS'
+        run: >-
+          cmake -S . -B build/desktop -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DBUILD_CORE_TEST=OFF -DSTUDIO_ASSISTANT_NETWORK=OFF -DSTUDIO_CATALOG_NETWORK=OFF
+      - name: Build ImGui Studio
+        run: cmake --build build/desktop --config Release --target imgui_studio --parallel 1
+      - name: Start the editor in a virtual X11 display
+        if: runner.os == 'Linux'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: xvfb-run -a ./build/desktop/bin/imgui_studio --smoke-test
+      - name: Check Windows executable
+        if: runner.os == 'Windows'
+        run: |
+          if (-not (Test-Path 'build/desktop/bin/Release/imgui_studio.exe' -PathType Leaf)) {
+            throw 'The Windows editor executable is missing.'
+          }
+      - name: Check macOS bundle
+        if: runner.os == 'macOS'
+        run: |
+          test -x "build/desktop/bin/ImGui Studio.app/Contents/MacOS/ImGui Studio"
+          plutil -lint "build/desktop/bin/ImGui Studio.app/Contents/Info.plist"
