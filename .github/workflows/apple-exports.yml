@@ -1,0 +1,26 @@
+name: Apple export build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apple:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Configure export tests
+        run: >-
+          cmake -S . -B build/check-apple -G Ninja -DCMAKE_BUILD_TYPE=Debug
+          -DBUILD_STUDIO_GUI=OFF -DSTUDIO_TEST_APPLE_BUILD=ON
+      - name: Build the generator and template packs
+        run: cmake --build build/check-apple --target verify_codegen --parallel 2
+      - name: Verify export generation and Xcode builds
+        run: >-
+          ctest --test-dir build/check-apple --output-on-failure --no-tests=error
+          -R '^(AppleCppExportGenerationTest|AppleCppExportBuildTest)$'

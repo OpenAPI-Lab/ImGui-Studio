@@ -1,0 +1,71 @@
+name: macOS packages
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  dmg:
+    name: DMG (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-15, arch: arm64 }
+          - { runner: macos-15-intel, arch: x86_64 }
+    env:
+      STUDIO_ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Build the app and disk image
+        run: |
+          set -euo pipefail
+          sdk=$(xcrun --sdk macosx --show-sdk-path)
+          cmake -S . -B build/package -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DSTUDIO_PACKAGING=ON -DBUILD_CORE_TEST=OFF \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 "-DCMAKE_OSX_ARCHITECTURES=$STUDIO_ARCH" \
+            -DCURL_NO_CURL_CMAKE=ON "-DCURL_INCLUDE_DIR=$sdk/usr/include" \
+            "-DCURL_LIBRARY_RELEASE=$sdk/usr/lib/libcurl.tbd"
+          cmake --build build/package --target imgui_studio --parallel 2
+          cpack --config build/package/CPackConfig.cmake -C Release -G DragNDrop
+      - name: Verify contents of the disk image
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          packages=(build/package/packages/*.dmg)
+          test "${#packages[@]}" -eq 1
+          dmg=${packages[0]}
+          (cd "$(dirname "$dmg")" && shasum -a 256 -c "$(basename "$dmg").sha256")
+          hdiutil verify "$dmg"
+          volume=$(mktemp -d)
+          hdiutil attach "$dmg" -readonly -nobrowse -mountpoint "$volume"
+          trap 'hdiutil detach "$volume"' EXIT
+          bundle="$volume/ImGui Studio.app/Contents"
+          test -L "$volume/Applications"
+          plutil -lint "$bundle/Info.plist"
+          executable="$bundle/MacOS/ImGui Studio"
+          test -x "$executable"
+          test "$(lipo -archs "$executable")" = "$STUDIO_ARCH"
+          otool -L "$executable" | awk 'NR > 1 && $1 !~ /^\/(usr\/lib|System\/Library)\// { print; failed=1 } END { exit failed }'
+          python3 - "$bundle/Resources" <<'PY'
+          from pathlib import Path
+          import runpy
+          import sys
+
+          verifier = runpy.run_path("packaging/verify_package.py")
+          resources = Path(sys.argv[1])
+          verifier["check_licenses"](resources, "LICENSE.txt")
+          verifier["check_documentation"](resources)
+          PY
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: ImGuiStudio-macOS-${{ matrix.arch }}
+          path: |
+            build/package/packages/*.dmg
+            build/package/packages/*.dmg.sha256
+          if-no-files-found: error

@@ -1,5 +1,7 @@
 # Cambios
 
+[English](CHANGELOG.en.md)
+
 ## 1.0.0 — 2026-11-24
 
 - Editor visual nativo con pantalla de inicio, proyectos recientes y recuperación
@@ -21,10 +23,13 @@
 - El editor y el ZIP portátil se probaron en Windows. El ciclo del instalador
   EXE se verificó con Wine en un entorno aislado. La firma Authenticode y el
   aviso de elevación en Windows nativo quedan pendientes.
-- El DEB se probó en Ubuntu bajo WSL con Wayland nativo y el editor arrancó
-  también mediante XWayland.
+- El DEB de Ubuntu 24.04 x64 se instaló, arrancó y retiró bajo WSL tanto con
+  Wayland directo como con XWayland. El DEB de Debian 13 x64 se instaló y
+  retiró con APT y arrancó con X11 virtual en un contenedor Debian 13.
 - El APK de ejemplo se compiló para arm64 y x86-64. El arranque, las imágenes,
   el toque, la rotación y la reanudación se probaron en un emulador Android 15
   x86-64. Quedan pendientes el teclado en pantalla y la prueba en un teléfono.
 - La generación de los proyectos de macOS e iOS se comprobó en Windows y WSL.
   Su compilación y ejecución con Xcode, y la prueba del DMG, siguen pendientes.
+
+Consulta los [instaladores y las sumas SHA-256](docs/INSTALLATION.md).
