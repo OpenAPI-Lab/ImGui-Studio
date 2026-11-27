@@ -182,7 +182,8 @@ inline constexpr char titleBarFunctions[] = R"CS(
         }
     }
 
-    private static void RenderTitleBar(UIState state, string title, TitleButton[] buttons,
+)CS"
+R"CS(    private static void RenderTitleBar(UIState state, string title, TitleButton[] buttons,
         TitleAppearance appearance, ImGuiWindowFlags flags, string openKey, WindowMode? mode, bool expanded)
     {
         var style = ImGui.GetStyle();

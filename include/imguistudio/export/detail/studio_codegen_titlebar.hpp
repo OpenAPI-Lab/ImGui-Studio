@@ -317,7 +317,8 @@ STUDIO_TITLE_FN void StudioDrawWindowControl(ImDrawList* draw, ImRect rect, int 
 }
 #endif
 
-STUDIO_TITLE_FN void StudioRenderTitleBar(const char* title, const StudioTitleButton* buttons, size_t count,
+)TITLE"
+R"TITLE(STUDIO_TITLE_FN void StudioRenderTitleBar(const char* title, const StudioTitleButton* buttons, size_t count,
                                         bool closable
 #ifdef STUDIO_EXPORT_CHROME
                                         , StudioTitleAppearance appearance, void* state, int mode

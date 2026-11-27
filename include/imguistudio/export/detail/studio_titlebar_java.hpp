@@ -187,7 +187,8 @@ inline constexpr char titleBarFunctions[] = R"JAVA(
         }
     }
 
-    private static void renderTitleBar(UIState state, String title, TitleButton[] buttons,
+)JAVA"
+R"JAVA(    private static void renderTitleBar(UIState state, String title, TitleButton[] buttons,
         TitleAppearance appearance, int flags, String openKey, WindowMode mode, boolean expanded) {
         var style = ImGui.getStyle();
         var pos = ImGui.getWindowPos();
