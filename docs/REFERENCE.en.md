@@ -6,7 +6,7 @@ The desktop editor uses C++17, Dear ImGui, GLFW, and OpenGL. The [source map](SO
 
 ## Projects and recovery
 
-On the start screen, create a project, enter a path to open an existing JSON file, or choose a recent project. Windows also offers the system file picker. Use **Ctrl+O** to open, **Ctrl+S** to save, and **Ctrl+Shift+S** to save as. New, Open, and Close prompt when the document has unsaved changes. Confirm replacement when **Save As** points at an existing file.
+On the start screen, create a project, choose an existing JSON design in the file picker, or open a recent project. Windows uses the system picker when available. Use **Ctrl+O** to open, **Ctrl+S** to save, and **Ctrl+Shift+S** to save as. New, Open, and Close prompt when the document has unsaved changes. Confirm replacement when **Save As** points at an existing file.
 
 Saving writes an exclusive temporary file in the same directory, flushes it, and replaces the target. Project files have a 32 MiB limit, up to 100,000 nodes, and a maximum widget depth of 128. Imported data retains unknown fields and widget types. JSON round trips preserve values and structure while allowing formatting and key order to change.
 

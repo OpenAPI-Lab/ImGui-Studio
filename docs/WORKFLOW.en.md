@@ -15,13 +15,21 @@
 | Action | What it does and when to use it |
 | --- | --- |
 | **New project** | Starts a new design. If the canvas is empty, use **Edit → New window** to create the root container. |
-| **Open project** | Opens a JSON design. Enter its path or use **Browse** on Windows. **Recent projects** reopens an existing path. |
-| **Save project** / **Save project as…** | Writes the current JSON. Press **Ctrl+S** to save or **Ctrl+Shift+S** to choose a different file. Confirm before replacing an existing file. |
+| **Open project** | Opens the file picker. Navigate to the JSON file, select it, and choose **Open**. **Recent projects** opens designs directly from the list. |
+| **Save project** / **Save project as…** | The first save and **Ctrl+Shift+S** open a folder and filename picker. Enter a filename, and the editor adds `.json` if it has no extension. Confirm before replacing another file. **Ctrl+S** saves directly after the project has a destination. |
 | **Save snapshot** | Stores a version in history. Use **Save project** to update the main file. |
 | **View → Version history** | Shows snapshots, their differences, and controls to restore or delete a version. After restoring, save the design to apply that state to the main JSON file. |
 | **Recover previous session** | When a recovery copy exists, **Recover copy** opens it as a new unsaved project. Use **Save project as…** to save it. **Later** keeps the copy. Confirming **Discard…** deletes it. |
 
 **Ctrl+O** opens the project dialog. Use **Ctrl+Z** to undo and **Ctrl+Y** or **Ctrl+Shift+Z** to redo. The [project contract](PROJECT_FORMAT.en.md) describes what each file contains.
+
+### Open and save with the file picker
+
+1. To load a design, choose **Open project** on the start screen or **File → Open JSON project…** (**Ctrl+O**). Browse to the design's folder, select the file, and choose **Open**.
+2. To save for the first time or make a copy, choose a folder in the picker, enter the filename, and select **Save**. **Save project as…** (**Ctrl+Shift+S**) opens the picker again. The first save and Save As ask before replacing another file.
+3. Cancel the picker to keep working on your current project. If loading fails, the editor reports the error and keeps the current design open.
+
+Windows uses the system picker when available. In the built-in picker, click a folder to enter it, choose **Up one level** to go to its parent, or select **Home folder** to return to your home directory. Open mode lists `.json` and `.JSON` files.
 
 ## What each panel does
 
@@ -35,6 +43,7 @@
 | **Run / Build** | Uses tools configured in the profile to generate and test a build of the design. **Test startup** exercises the generated host where supported. |
 | **View → AI assistant** | Opens provider, model, and connection controls. Review a proposal before applying it as an edit. [Configuration and data sent](ASSISTANT.en.md) |
 | **View → Language** | Changes the editor language and saves the selection for the next launch. [Languages and community packs](LOCALIZATION.en.md) |
+| **View → Studio appearance** | Changes the editor palette and panel rounding. Also available from the start screen. Studio remembers your selection and the design keeps its own colors. |
 
 ## Practice with a design
 
@@ -47,6 +56,14 @@ For a closer look at a step, see [Canvas and layout](CANVAS.en.md), [Title bars]
 5. Select a control and open **Widget colors**. Enabling a custom color overrides the inherited color. Select a window to edit its appearance. Available properties vary by control and exporter. [Widget reference](REFERENCE.en.md#widget-properties-and-runtime-behavior)
 6. Insert a checkbox, set its **Initial value**, and switch to **Preview**. Toggle the checkbox and then select **Reset preview** to restore the initial state. **IDE** returns to design mode. Interacting with a checkbox in preview leaves its design value intact.
 7. Save the project as JSON. In **Generated code**, choose C++ and **Export CMake…**. Choose a new directory under an existing parent. Read the generated README and `codegen_report.txt` for build steps and target limitations. Connect the **Refresh** action in the application hosting the generated code. [C++ action example](../examples/title-bar-action/README.en.md)
+
+## Customize Studio appearance
+
+1. Choose **Studio appearance** on the start screen or open **View → Studio appearance** from the editor.
+2. Under **Editor palette**, choose **Midnight**, **Graphite**, **Ocean**, **Forest**, **Plum**, or the light **Porcelain** theme.
+3. Use **Panel rounding** to adjust the radius. The default is 10 and the available range is 0 to 18.
+
+The palette applies to the Studio interface and is saved across sessions. To change the colors of a window or widget in your project, select it on the canvas and use the **Properties inspector**.
 
 ## Choose the output
 

@@ -49,6 +49,12 @@ A successful check returns exit code `0`. The MSVC executable is under the selec
 
 See the [support matrix](CAPABILITIES.en.md) for local evidence and pending checks.
 
+### Project picker and appearance
+
+Run `SessionRecoveryUiTest` in a build with GUI and tests enabled. It covers built-in picker selection, subfolders, filenames with accents, invalid loads, cancellation from an unsaved-changes prompt, and palette persistence. To exercise the native dialog, launch a regular Windows instance and repeat **Open project**, **Save As**, the overwrite prompt, and **Cancel**. Record which picker appeared.
+
+For appearance changes, choose a dark palette and **Porcelain** in [Studio appearance](WORKFLOW.en.md#customize-studio-appearance). Change the radius and reopen the editor to check persistence. Use the same project before and after to check that its own colors and radii stay the same in Preview.
+
 ## Run a complete C++ export
 
 In a build with the GUI and tests enabled, run:

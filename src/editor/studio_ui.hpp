@@ -12,6 +12,8 @@
 #include "imguistudio/project/studio_session_store.hpp"
 #include "studio_preview.hpp"
 #include "studio_canvas.hpp"
+#include "studio_editor_appearance.hpp"
+#include "studio_project_file_picker.hpp"
 #include "services/studio_assistant_panel.hpp"
 #include "services/studio_extensions.hpp"
 
@@ -27,6 +29,7 @@ class StudioApp {
   void renderFrame();
   bool requestClose();
   bool shouldClose() const { return quitRequested_; }
+  ImVec4 workspaceColor() const { return editorColor(editorPalettes[appearance_.palette].workspace); }
   const StudioProject& project() const { return project_; }
   const std::string& selectedNodeId() const {
     static const std::string empty;
@@ -56,6 +59,7 @@ class StudioApp {
   std::filesystem::path projectPath_;
   bool welcomeOpen_ = false;
   StudioLocale locale_;
+  EditorAppearance appearance_;
   std::optional<size_t> pendingLanguage_;
   NativeImageCache* images_ = nullptr;
   StudioWidgetLibrary widgetLibrary_;
@@ -95,6 +99,11 @@ class StudioApp {
   bool canvasNeedsSync_ = true;
   std::map<std::string, std::array<float, 4>> canvasGeometry_;
   bool confirmOverwrite_ = false;
+  ProjectFileBrowser fileBrowser_;
+  std::filesystem::path selectedProjectFile_;
+  bool openProjectPicker_ = false;
+  bool showAppearance_ = false;
+  bool appearanceDirty_ = true;
   bool persistenceEnabled_ = true;
   bool recoveryDirty_ = false;
   bool historyDirty_ = false;
@@ -138,6 +147,10 @@ class StudioApp {
   void requestAction(PendingAction action);
   void continuePendingAction();
   bool saveProject(bool saveAs = false);
+  bool saveProjectTo(const std::filesystem::path& path, bool allowReplace);
+  void requestProjectPicker(FileDialog mode);
+  void renderProjectFilePicker();
+  void renderAppearance();
   bool openProject(const std::filesystem::path& path);
   void rememberProject(const std::filesystem::path& path);
   void renderWelcome();

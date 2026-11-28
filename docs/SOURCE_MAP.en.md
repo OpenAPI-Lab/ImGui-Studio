@@ -27,6 +27,8 @@ The [architecture](ARCHITECTURE.en.md) explains why these layers are arranged th
 
 | File or directory | Responsibility |
 | --- | --- |
+| [`src/editor/studio_editor_appearance.hpp`](../src/editor/studio_editor_appearance.hpp) | Editor palettes, rounding, and persisted preferences. |
+| [`src/editor/studio_project_file_picker.hpp`](../src/editor/studio_project_file_picker.hpp) | Folder navigation, JSON project listing, and save destination. |
 | [`src/app/main.cpp`](../src/app/main.cpp) | Startup, frame loop, and window and font smoke modes. |
 | [`src/editor/studio_ui.hpp`](../src/editor/studio_ui.hpp) | StudioApp state, editing, windows, and editor services. |
 | [`src/editor/studio_ui.cpp`](../src/editor/studio_ui.cpp) | Navigation, dialogs, files, library, export, and Build panel. |

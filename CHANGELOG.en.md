@@ -2,6 +2,11 @@
 
 [Español](CHANGELOG.md)
 
+## Unreleased
+
+- **Open project**, the first save, and **Save project as…** let you browse folders and select a file. Windows uses the system picker when available.
+- **Studio appearance** offers six palettes and adjustable editor panel rounding. Studio remembers these settings across sessions.
+
 ## 1.0.0 — 2026-11-24
 
 - Native visual editor with a start screen, recent projects, and recovery of unsaved changes.

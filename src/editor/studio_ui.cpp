@@ -81,14 +81,9 @@ void clipCanvasWindow(ImVec2 minimum, ImVec2 maximum) {
   ImGui::PushClipRect(minimum, maximum, true);
 }
 
-void copyStringToBuffer(const std::string& src, char* dst, size_t dstSize) {
-  if (dstSize == 0) return;
-  std::strncpy(dst, src.c_str(), dstSize - 1);
-  dst[dstSize - 1] = '\0';
-}
-
 #ifdef _WIN32
-std::optional<std::filesystem::path> browseForJsonFile(const StudioLocale& locale, std::string& error) {
+std::optional<std::filesystem::path> browseForJsonFile(const StudioLocale& locale, std::string& error,
+    const std::filesystem::path& initialFolder = {}, const std::string* suggestedFilename = nullptr) {
   std::array<wchar_t, 32768> selected{};
   auto filter = std::filesystem::u8path(locale.text(StudioText::JsonFilter)).wstring();
   filter.append(L"\0*.json\0", 8);
@@ -100,8 +95,19 @@ std::optional<std::filesystem::path> browseForJsonFile(const StudioLocale& local
   picker.lpstrFilter = filter.c_str();
   picker.lpstrFile = selected.data();
   picker.nMaxFile = static_cast<DWORD>(selected.size());
-  picker.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR;
-  if (GetOpenFileNameW(&picker)) {
+  picker.Flags = OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR | OFN_EXPLORER;
+  const auto folder = initialFolder.wstring();
+  const auto title = std::filesystem::u8path(locale.text(
+      suggestedFilename ? StudioText::SaveAs : StudioText::OpenJson)).wstring();
+  picker.lpstrInitialDir = folder.empty() ? nullptr : folder.c_str();
+  picker.lpstrTitle = title.c_str();
+  if (suggestedFilename) {
+    const auto suggested = std::filesystem::u8path(*suggestedFilename).wstring();
+    std::copy_n(suggested.begin(), std::min(suggested.size(), selected.size() - 1), selected.begin());
+    picker.lpstrDefExt = L"json";
+    picker.Flags |= OFN_OVERWRITEPROMPT;
+  } else picker.Flags |= OFN_FILEMUSTEXIST;
+  if (suggestedFilename ? GetSaveFileNameW(&picker) : GetOpenFileNameW(&picker)) {
     error.clear();
     return std::filesystem::path(selected.data());
   }
@@ -197,7 +203,11 @@ StudioApp::StudioApp(bool persistenceEnabled, std::optional<StudioProject> initi
   : previewRenderer_(images), designRenderer_(images), welcomeOpen_(persistenceEnabled && !initialProject),
     images_(images), persistenceEnabled_(persistenceEnabled) {
   if (persistenceEnabled_) {
-    try { locale_.load(defaultStudioStateDirectory()); }
+    try {
+      const auto state = defaultStudioStateDirectory();
+      locale_.load(state);
+      appearance_ = loadEditorAppearance(state);
+    }
     catch (const std::filesystem::filesystem_error&) { /* The default language is still usable. */ }
     catch (const std::runtime_error&) { /* The state directory may be unavailable. */ }
   }
@@ -503,10 +513,7 @@ void StudioApp::continuePendingAction() {
   const auto action = pendingAction_;
   pendingAction_ = PendingAction::None;
   if (action == PendingAction::Open) {
-    fileDialog_ = FileDialog::Open;
-    fileError_.clear();
-    projectPathBuf_[0] = '\0';
-    openFilePopup_ = true;
+    requestProjectPicker(FileDialog::Open);
   } else if (action == PendingAction::New) {
     finishSession(true);
     resetRecoverySession();
@@ -602,6 +609,41 @@ void StudioApp::renderLanguageChoices() {
   }
 }
 
+void StudioApp::renderAppearance() {
+  ImGui::SetNextWindowSize(ImVec2(360, 0), ImGuiCond_Appearing);
+  bool save = false;
+  if (ImGui::Begin(label(StudioText::EditorAppearance).c_str(), &showAppearance_,
+                   ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings)) {
+    ImGui::TextWrapped("%s", tr(StudioText::EditorAppearanceHint));
+    ImGui::TextUnformatted(tr(StudioText::EditorTheme));
+    ImGui::SetNextItemWidth(-1.0f);
+    if (ImGui::BeginCombo("##EditorPalette", editorPalettes[appearance_.palette].name)) {
+      for (size_t i = 0; i < editorPalettes.size(); ++i) {
+        if (ImGui::Selectable(editorPalettes[i].name, i == appearance_.palette)) {
+          appearance_.palette = i;
+          save = true;
+        }
+      }
+      ImGui::EndCombo();
+    }
+    ImGui::TextUnformatted(tr(StudioText::EditorRounding));
+    ImGui::SetNextItemWidth(-1.0f);
+    if (ImGui::SliderInt("##EditorRounding", &appearance_.rounding, 0, 18, "%d", ImGuiSliderFlags_AlwaysClamp))
+      appearanceDirty_ = true;
+    save |= ImGui::IsItemDeactivatedAfterEdit();
+  }
+  ImGui::End();
+  if (!save) return;
+  appearanceDirty_ = true;
+  if (!persistenceEnabled_) return;
+  try {
+    const auto result = saveEditorAppearance(defaultStudioStateDirectory(), appearance_);
+    if (!result) fileStatus_ = std::string(tr(StudioText::AppearanceSaveError)) + " " + result.error;
+  } catch (const std::exception& error) {
+    fileStatus_ = std::string(tr(StudioText::AppearanceSaveError)) + " " + error.what();
+  }
+}
+
 void StudioApp::renderWelcome() {
   const auto* viewport = ImGui::GetMainViewport();
   ImGui::SetNextWindowPos(viewport->WorkPos);
@@ -619,6 +661,9 @@ void StudioApp::renderWelcome() {
         renderLanguageChoices();
         ImGui::EndCombo();
       }
+      const auto appearanceLabel = label(StudioText::EditorAppearance, width * 0.4f);
+      sameLineIfFits(appearanceLabel.c_str());
+      if (ImGui::Button(appearanceLabel.c_str())) showAppearance_ = true;
       ImGui::Spacing();
       const float buttonMin = std::min(155.0f, width * 0.4f);
       const auto welcomeButton = [&](const std::string& title) {
@@ -656,29 +701,165 @@ void StudioApp::renderWelcome() {
 
 bool StudioApp::saveProject(bool saveAs) {
   if (saveAs || projectPath_.empty()) {
-    if (fileDialog_ != FileDialog::None) return false;
-    fileDialog_ = FileDialog::SaveAs;
-    confirmOverwrite_ = false;
-    fileError_.clear();
-    copyStringToBuffer(projectPath_.empty() ? (recoveryOriginPath_.empty() ? "proyecto.json" : "proyecto_recuperado.json") : projectPath_.u8string(),
-                       projectPathBuf_, sizeof(projectPathBuf_));
-    openFilePopup_ = true;
+    if (fileDialog_ == FileDialog::None) requestProjectPicker(FileDialog::SaveAs);
     return false;
   }
-  const auto result = saveProjectIfUnchanged(project_, projectPath_, savedState_);
+  return saveProjectTo(projectPath_, true);
+}
+
+bool StudioApp::saveProjectTo(const std::filesystem::path& path, bool allowReplace) {
+  std::error_code pathError;
+  const bool same = !projectPath_.empty() && (path == projectPath_ ||
+    std::filesystem::equivalent(path, projectPath_, pathError));
+  const auto& destination = same ? projectPath_ : path;
+  pathError.clear();
+  const bool exists = std::filesystem::exists(destination, pathError);
+  const auto result = pathError ? ProjectSaveResult{false, pathError.message()} :
+    exists && !same && !allowReplace ? ProjectSaveResult{false, tr(StudioText::FileExists)} :
+    saveProjectIfUnchanged(project_, destination, same ? std::optional<std::string>(savedState_) : std::nullopt);
   if (!result) {
     fileStatus_ = std::string(tr(StudioText::SaveError)) + result.error;
     fileError_ = result.error;
     return false;
   }
   fileError_.clear();
+  if (!same) projectPath_ = destination;
   savedState_ = projectToJson(project_).dump();
   fileStatus_ = std::string(tr(StudioText::SavedStatus)) + projectPath_.u8string();
   rememberProject(projectPath_);
+  if (!same || !historyFile_) bindHistory(projectPath_, false);
+  recoveryOriginPath_.clear();
   captureSnapshot(tr(StudioText::ProjectSaved), SnapshotKind::Manual, true);
   recoveryDirty_ = true;
   persistSession();
   return true;
+}
+
+void StudioApp::requestProjectPicker(FileDialog mode) {
+  fileDialog_ = mode;
+  confirmOverwrite_ = false;
+  fileError_.clear();
+  selectedProjectFile_.clear();
+  auto previous = projectPath_;
+  if (previous.empty()) {
+    if (mode == FileDialog::Open && !recentProjects_.empty()) previous = recentProjects_.front();
+    if (mode == FileDialog::SaveAs) previous = std::filesystem::u8path(recoveryOriginPath_);
+  }
+  std::error_code error;
+  fileBrowser_.folder = previous.empty() ? projectFileHome() : std::filesystem::absolute(previous, error).parent_path();
+  if (error || fileBrowser_.folder.empty()) fileBrowser_.folder = projectFileHome();
+  if (mode == FileDialog::SaveAs)
+    fileBrowser_.filename = projectPath_.empty() ?
+      (recoveryOriginPath_.empty() ? "project.json" : "recovered-project.json") : projectPath_.filename().u8string();
+  openProjectPicker_ = true;
+}
+
+void StudioApp::renderProjectFilePicker() {
+  const bool opening = fileDialog_ == FileDialog::Open;
+  if (!opening && fileDialog_ != FileDialog::SaveAs) return;
+  const auto title = label(opening ? StudioText::OpenJson : StudioText::SaveAs);
+  const auto complete = [&](const std::filesystem::path& path, bool replace) {
+    if (!(opening ? openProject(path) : saveProjectTo(path, replace))) return false;
+    fileDialog_ = FileDialog::None;
+    return true;
+  };
+  const auto selectFolder = [&](const std::filesystem::path& path) {
+    if (const auto error = fileBrowser_.selectFolder(path); error)
+      fileError_ = std::string(tr(StudioText::BrowseError)) + " " + error.message();
+    else {
+      fileError_.clear();
+      selectedProjectFile_.clear();
+    }
+    confirmOverwrite_ = false;
+  };
+  if (std::exchange(openProjectPicker_, false)) {
+#ifdef _WIN32
+    if (GetActiveWindow()) {
+      if (const auto selected = browseForJsonFile(locale_, fileError_, fileBrowser_.folder,
+            opening ? nullptr : &fileBrowser_.filename)) {
+        if (complete(*selected, true)) {
+          continuePendingAction();
+          return;
+        }
+        if (!opening) fileBrowser_.filename = selected->filename().u8string();
+        fileBrowser_.folder = selected->parent_path();
+      } else if (fileError_.empty()) {
+        fileDialog_ = FileDialog::None;
+        pendingAction_ = PendingAction::None;
+        return;
+      }
+    }
+#endif
+    const auto previousError = std::exchange(fileError_, {});
+    fileBrowser_.entries.clear();
+    selectFolder(fileBrowser_.folder);
+    if (!fileError_.empty()) selectFolder(projectFileHome());
+    if (!previousError.empty()) fileError_ = previousError;
+    ImGui::OpenPopup(title.c_str());
+  }
+  ImGui::SetNextWindowSize(ImVec2(std::min(540.0f, ImGui::GetMainViewport()->WorkSize.x - 36.0f), 0), ImGuiCond_Appearing);
+  if (!ImGui::BeginPopupModal(title.c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize)) return;
+  if (ImGui::Button(label(StudioText::HomeFolder).c_str())) selectFolder(projectFileHome());
+  ImGui::SameLine();
+  const auto parent = fileBrowser_.folder.parent_path();
+  ImGui::BeginDisabled(parent.empty() || parent == fileBrowser_.folder);
+  if (ImGui::Button(label(StudioText::ParentFolder).c_str())) selectFolder(parent);
+  ImGui::EndDisabled();
+  ImGui::TextWrapped("%s", fileBrowser_.folder.u8string().c_str());
+  std::optional<ProjectFileBrowser::Entry> selection;
+  if (ImGui::BeginChild("##ProjectDirectory", ImVec2(0, std::min(220.0f, ImGui::GetMainViewport()->WorkSize.y * 0.35f)),
+                        ImGuiChildFlags_Borders)) {
+    int row = 0;
+    for (const auto& entry : fileBrowser_.entries) {
+      ImGui::PushID(row++);
+      const auto name = entry.path.filename().u8string();
+      const auto caption = (entry.directory ? name + "/" : name) + "###project_entry";
+      const bool selected = !entry.directory && (opening ? entry.path == selectedProjectFile_ : name == fileBrowser_.filename);
+      if (ImGui::Selectable(caption.c_str(), selected)) selection = entry;
+      ImGui::PopID();
+      if (selection) break;
+    }
+  }
+  ImGui::EndChild();
+  if (selection) {
+    if (selection->directory) selectFolder(selection->path);
+    else if (opening) {
+      selectedProjectFile_ = selection->path;
+      fileError_.clear();
+    }
+    else {
+      fileBrowser_.filename = selection->path.filename().u8string();
+      confirmOverwrite_ = false;
+    }
+  }
+  auto path = std::optional<std::filesystem::path>();
+  if (opening) {
+    if (!selectedProjectFile_.empty()) path = selectedProjectFile_;
+  } else {
+    ImGui::TextUnformatted(tr(StudioText::ProjectFilename));
+    ImGui::SetNextItemWidth(-1.0f);
+    if (ImGui::InputText("##SaveFilename", &fileBrowser_.filename)) confirmOverwrite_ = false;
+    path = fileBrowser_.destination();
+    std::error_code error;
+    if (path && *path != projectPath_ && std::filesystem::exists(*path, error))
+      ImGui::Checkbox(label(StudioText::ConfirmOverwrite).c_str(), &confirmOverwrite_);
+  }
+  if (!fileError_.empty()) ImGui::TextWrapped("%s", fileError_.c_str());
+  ImGui::BeginDisabled(!path);
+  const bool accept = ImGui::Button(label(opening ? StudioText::Open : StudioText::Save).c_str());
+  ImGui::EndDisabled();
+  ImGui::SameLine();
+  const bool cancel = ImGui::Button(label(StudioText::Cancel).c_str()) || ImGui::IsKeyPressed(ImGuiKey_Escape);
+  if (accept && path && complete(*path, confirmOverwrite_)) {
+    ImGui::CloseCurrentPopup();
+    continuePendingAction();
+  } else if (cancel) {
+    fileDialog_ = FileDialog::None;
+    pendingAction_ = PendingAction::None;
+    fileError_.clear();
+    ImGui::CloseCurrentPopup();
+  }
+  ImGui::EndPopup();
 }
 
 void StudioApp::renderProjectDialogs() {
@@ -723,13 +904,13 @@ void StudioApp::renderProjectDialogs() {
     }
     ImGui::EndPopup();
   }
+  renderProjectFilePicker();
   if (openFilePopup_) {
     ImGui::OpenPopup(label(StudioText::JsonDialog).c_str());
     openFilePopup_ = false;
   }
   if (ImGui::BeginPopupModal(label(StudioText::JsonDialog).c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
     const float width = std::clamp(ImGui::GetMainViewport()->WorkSize.x - 64.0f, 140.0f, 620.0f);
-    const bool opening = fileDialog_ == FileDialog::Open;
     const bool python = fileDialog_ == FileDialog::ExportPython;
     const bool csharp = fileDialog_ == FileDialog::ExportCSharp;
     const bool java = fileDialog_ == FileDialog::ExportJava;
@@ -740,12 +921,10 @@ void StudioApp::renderProjectDialogs() {
     const bool ios = fileDialog_ == FileDialog::ExportIOS;
     const bool usesPack = android || macos || ios;
     auto& packPath = cppPackPaths_[macos ? 1 : ios ? 2 : 0];
-    const bool exporting = python || csharp || java || c || rust || usesPack || fileDialog_ == FileDialog::ExportCpp;
     ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + width);
-    if (exporting) ImGui::TextWrapped("%s (%s)", tr(StudioText::ExportProjectHint),
+    ImGui::TextWrapped("%s (%s)", tr(StudioText::ExportProjectHint),
       python ? "Python" : csharp ? "C#" : java ? "Java" : c ? "C" : rust ? "Rust" :
       android ? "Android C++" : macos ? "macOS C++" : ios ? "iOS C++" : "C++");
-    else ImGui::TextUnformatted(opening ? tr(StudioText::OpenProjectHint) : tr(StudioText::SaveProjectHint));
     ImGui::PopTextWrapPos();
     ImGui::TextWrapped("%s", tr(StudioText::Path));
     ImGui::SetNextItemWidth(width);
@@ -761,66 +940,23 @@ void StudioApp::renderProjectDialogs() {
       ImGui::SetNextItemWidth(width);
       ImGui::InputText("##CppTemplateFolder", &packPath);
     }
-#ifdef _WIN32
-    if (opening && ImGui::Button(label(StudioText::Browse, width - 12.0f).c_str())) {
-      if (const auto picked = browseForJsonFile(locale_, fileError_)) {
-        const auto chosen = picked->u8string();
-        if (chosen.size() < sizeof(projectPathBuf_)) {
-          copyStringToBuffer(chosen, projectPathBuf_, sizeof(projectPathBuf_));
-          fileError_.clear();
-        } else fileError_ = tr(StudioText::PathTooLong);
-      }
-    }
-#endif
     ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + width);
-    ImGui::TextDisabled("%s", exporting ? tr(StudioText::ExportPathHint) : tr(StudioText::FilePathHint));
+    ImGui::TextDisabled("%s", tr(StudioText::ExportPathHint));
     ImGui::PopTextWrapPos();
-    if (!opening && !exporting)
-      ImGui::Checkbox(label(StudioText::ConfirmOverwrite, width - 45.0f).c_str(), &confirmOverwrite_);
     if (!fileError_.empty()) ImGui::TextWrapped("%s", fileError_.c_str());
-    if (ImGui::Button(label(exporting ? StudioText::Export : opening ? StudioText::Open : StudioText::Save, width - 12.0f).c_str())) {
+    if (ImGui::Button(label(StudioText::Export, width - 12.0f).c_str())) {
       const auto path = std::filesystem::u8path(projectPathBuf_);
-      bool success = false;
-      if (exporting) {
-        const auto result = android ? exportAndroidCppBundle(project_,std::filesystem::u8path(packPath),path) :
-          macos || ios ? exportAppleCppBundle(project_,std::filesystem::u8path(packPath),path,
-                                              ios ? AppleCppTarget::IOS : AppleCppTarget::MacOS) :
-          python ? exportPythonBundle(project_,path) : csharp ? exportCSharpBundle(project_,path) :
-          java ? exportJavaBundle(project_,path) : c ? exportCBundle(project_,path) :
-          rust ? exportRustBundle(project_,path) : exportCppBundle(project_,path,exportCppRenderer_);
-        if (result) {
-          fileStatus_ = std::string(tr(StudioText::Exported)) + path.u8string() + "\n" + tr(StudioText::CheckExportReport);
-          success = true;
-        }
-        else fileError_ = std::string(tr(StudioText::ExportError)) + result.error;
-      } else if (opening) {
-        success = openProject(path);
-      } else {
-        std::error_code pathError;
-        const bool replacingOther = path != projectPath_ && std::filesystem::exists(path, pathError);
-        const auto result = replacingOther && !confirmOverwrite_
-          ? ProjectSaveResult{false, tr(StudioText::FileExists)}
-          : saveProjectIfUnchanged(project_, path, path == projectPath_
-              ? std::optional<std::string>(savedState_) : std::nullopt);
-        if (result) {
-          const bool changedPath = projectPath_ != path;
-          projectPath_ = path;
-          savedState_ = projectToJson(project_).dump();
-          fileStatus_ = std::string(tr(StudioText::SavedStatus)) + path.u8string();
-          rememberProject(path);
-          if (changedPath || !historyFile_) bindHistory(path, false);
-          recoveryOriginPath_.clear();
-          captureSnapshot(tr(StudioText::ProjectSaved), SnapshotKind::Manual, true);
-          recoveryDirty_ = true;
-          persistSession();
-          success = true;
-        } else fileError_ = std::string(tr(StudioText::SaveError)) + result.error;
-      }
-      if (success) {
+      const auto result = android ? exportAndroidCppBundle(project_,std::filesystem::u8path(packPath),path) :
+        macos || ios ? exportAppleCppBundle(project_,std::filesystem::u8path(packPath),path,
+                                            ios ? AppleCppTarget::IOS : AppleCppTarget::MacOS) :
+        python ? exportPythonBundle(project_,path) : csharp ? exportCSharpBundle(project_,path) :
+        java ? exportJavaBundle(project_,path) : c ? exportCBundle(project_,path) :
+        rust ? exportRustBundle(project_,path) : exportCppBundle(project_,path,exportCppRenderer_);
+      if (result) {
+        fileStatus_ = std::string(tr(StudioText::Exported)) + path.u8string() + "\n" + tr(StudioText::CheckExportReport);
         fileDialog_ = FileDialog::None;
         ImGui::CloseCurrentPopup();
-        continuePendingAction();
-      }
+      } else fileError_ = std::string(tr(StudioText::ExportError)) + result.error;
     }
     const auto cancelLabel = label(StudioText::Cancel, width - 12.0f);
     sameLineIfFits(cancelLabel.c_str());
@@ -835,6 +971,7 @@ void StudioApp::renderProjectDialogs() {
 
 void StudioApp::renderFrame() {
   const ScopedStudioLocale language(locale_);
+  if (std::exchange(appearanceDirty_, false)) applyEditorAppearance(appearance_);
   if (pendingLanguage_) {
     const auto result = locale_.select(*pendingLanguage_);
     if (!result) fileStatus_ = std::string(tr(StudioText::LanguageSaveError)) + result.error;
@@ -847,6 +984,8 @@ void StudioApp::renderFrame() {
   designRenderer_.setKnobsInstalled(extensions_->installed());
   if (widgetEditor_) {
     if ((recoveryDirty_ || historyDirty_) && nowUnixMs() - lastPersistAttemptMs_ >= 2000) persistSession();
+    widgetEditor_->appearance_ = appearance_;
+    widgetEditor_->appearanceDirty_ = false;
     widgetEditor_->renderFrame();
     handleWidgetDraftAction();
     return;
@@ -858,6 +997,7 @@ void StudioApp::renderFrame() {
   if (welcomeOpen_) {
     if (shortcut && ImGui::IsKeyPressed(ImGuiKey_O)) requestAction(PendingAction::Open);
     renderWelcome();
+    if (showAppearance_) renderAppearance();
     renderProjectDialogs();
     renderRecoveryDialog();
     return;
@@ -928,6 +1068,7 @@ void StudioApp::renderFrame() {
     renderVersionHistoryWindow();
   }
   if (showBuildPanel_) renderBuildWindow();
+  if (showAppearance_) renderAppearance();
   if (showAssistant_) {
     auto edit = assistant_.render(project_,selectedNodeId(),codeLanguage_,showAssistant_,persistenceEnabled_);
     if (edit.project) {
@@ -1253,6 +1394,7 @@ void StudioApp::renderTopMenuBar() {
       ImGui::EndMenu();
     }
     if (ImGui::BeginMenu(label(StudioText::View, menuWidth).c_str())) {
+      ImGui::MenuItem(label(StudioText::EditorAppearance).c_str(), nullptr, &showAppearance_);
       ImGui::MenuItem(label(StudioText::PreviewMode).c_str(), nullptr, &previewMode_);
       ImGui::MenuItem(label(StudioText::GridSnap).c_str(), nullptr, &snapToGrid_);
       const auto zoom = std::string(tr(StudioText::CanvasZoom)) + " (" +
@@ -1530,13 +1672,14 @@ void StudioApp::renderCenterCanvas(float x, float y, float w, float h) {
       const float remainder = std::fmod(value, gridStep);
       return remainder < 0 ? remainder + gridStep : remainder;
     };
+    const auto gridColor = ImGui::GetColorU32(ImGuiCol_Border, 0.42f);
     for (float gx = gridStart(offset.x); gx < avail.x; gx += gridStep) {
       dl->AddLine(ImVec2(p0.x + gx, p0.y), ImVec2(p0.x + gx, p0.y + avail.y),
-                  IM_COL32(36, 44, 62, 110));
+                  gridColor);
     }
     for (float gy = gridStart(offset.y); gy < avail.y; gy += gridStep) {
       dl->AddLine(ImVec2(p0.x, p0.y + gy), ImVec2(p0.x + avail.x, p0.y + gy),
-                  IM_COL32(36, 44, 62, 110));
+                  gridColor);
     }
 
     ImGui::InvisibleButton("##CanvasDropZone", ImVec2(std::max(1.0f, avail.x), std::max(1.0f, avail.y)));

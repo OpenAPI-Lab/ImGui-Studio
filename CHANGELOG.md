@@ -2,6 +2,11 @@
 
 [English](CHANGELOG.en.md)
 
+## Sin publicar
+
+- **Abrir proyecto**, el primer guardado y **Guardar proyecto como…** permiten navegar por carpetas y elegir el archivo. En Windows se usa el selector del sistema cuando está disponible.
+- **Apariencia de Studio** ofrece seis paletas y redondeo ajustable para los paneles del editor. Los ajustes se recuerdan entre sesiones.
+
 ## 1.0.0 — 2026-11-24
 
 - Editor visual nativo con pantalla de inicio, proyectos recientes y recuperación

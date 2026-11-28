@@ -27,6 +27,8 @@ La [arquitectura](ARCHITECTURE.md) explica por qué se organizan así las capas.
 
 | Archivo o carpeta | Responsabilidad |
 | --- | --- |
+| [`src/editor/studio_editor_appearance.hpp`](../src/editor/studio_editor_appearance.hpp) | Paletas, redondeo y preferencias del editor. |
+| [`src/editor/studio_project_file_picker.hpp`](../src/editor/studio_project_file_picker.hpp) | Navegación de carpetas, lista de proyectos y destino de guardado. |
 | [`src/app/main.cpp`](../src/app/main.cpp) | Arranque, ciclo de fotogramas y pruebas rápidas de ventana y fuentes. |
 | [`src/editor/studio_ui.hpp`](../src/editor/studio_ui.hpp) | Estado de StudioApp, edición, ventanas y servicios del editor. |
 | [`src/editor/studio_ui.cpp`](../src/editor/studio_ui.cpp) | Navegación, diálogos, archivo, biblioteca, exportación y panel Build. |

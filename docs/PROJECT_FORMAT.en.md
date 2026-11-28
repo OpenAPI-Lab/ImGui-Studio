@@ -23,7 +23,7 @@ Saving checks for external changes and uses temporary-file replacement. Locks co
 
 ## State directory
 
-Windows uses `%LOCALAPPDATA%/ImGuiStudio`. Linux uses `$XDG_STATE_HOME/ImGuiStudio` or `~/.local/state/ImGuiStudio`. macOS uses `~/Library/Application Support/ImGuiStudio`. Set `IMGUI_STUDIO_STATE_DIR` to isolate a test. This directory also holds recent projects, language settings, the library, extensions, and build profiles.
+Windows uses `%LOCALAPPDATA%/ImGuiStudio`. Linux uses `$XDG_STATE_HOME/ImGuiStudio` or `~/.local/state/ImGuiStudio`. macOS uses `~/Library/Application Support/ImGuiStudio`. Set `IMGUI_STUDIO_STATE_DIR` to isolate a test. This directory also holds recent projects, language settings, the library, extensions, and build profiles. Studio stores its interface palette and rounding in `appearance.json`. Design styling stays in the project JSON. [Studio appearance](WORKFLOW.en.md#customize-studio-appearance)
 
 ## Verification
 

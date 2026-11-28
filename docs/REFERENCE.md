@@ -44,9 +44,9 @@ de validación por plataforma.
 ## Archivos de proyecto
 
 Al abrir ImGui Studio, la pantalla de inicio ofrece **Nuevo proyecto**,
-**Abrir proyecto** y los últimos proyectos abiertos o guardados. En Windows,
-**Examinar** abre el selector de archivos del sistema. También se puede
-escribir la ruta en el diálogo de apertura.
+**Abrir proyecto** y los últimos proyectos abiertos o guardados. Para abrir
+un diseño, navega a su carpeta y selecciona el JSON. En Windows se usa el
+selector del sistema cuando está disponible.
 
 Si quedan cambios recuperables de una sesión interrumpida, el aviso
 aparece sobre el inicio. Guardar retira la copia temporal de la sesión.
@@ -155,7 +155,7 @@ también busca las fuentes de Windows. Se pueden indicar fuentes TrueType
 locales en el subdirectorio `fonts` del estado con los nombres
 `latin.ttf`, `korean.ttf`, `japanese.ttf` y `chinese.ttf`.
 
-- Archivo > Abrir proyecto JSON (`Ctrl+O`): introducir una ruta absoluta o relativa.
+- Archivo > Abrir proyecto JSON (`Ctrl+O`): navegar y seleccionar un archivo.
 - Guardar proyecto (`Ctrl+S`) y Guardar como (`Ctrl+Shift+S`): guardado real en disco.
 - Guardar como requiere confirmar el reemplazo de otro archivo.
 - Nuevo/Abrir/Cerrar detectan cambios sin guardar y permiten guardar, descartar o cancelar.

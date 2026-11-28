@@ -23,7 +23,7 @@ Al guardar se comprueba si el archivo cambió en disco y se usa reemplazo median
 
 ## Directorio de estado
 
-Windows usa `%LOCALAPPDATA%/ImGuiStudio`. Linux usa `$XDG_STATE_HOME/ImGuiStudio` o `~/.local/state/ImGuiStudio`. macOS usa `~/Library/Application Support/ImGuiStudio`. Define `IMGUI_STUDIO_STATE_DIR` para aislar una prueba. El directorio contiene también recientes, ajustes de idioma, biblioteca, extensiones y perfiles del editor.
+Windows usa `%LOCALAPPDATA%/ImGuiStudio`. Linux usa `$XDG_STATE_HOME/ImGuiStudio` o `~/.local/state/ImGuiStudio`. macOS usa `~/Library/Application Support/ImGuiStudio`. Define `IMGUI_STUDIO_STATE_DIR` para aislar una prueba. El directorio contiene también recientes, ajustes de idioma, biblioteca, extensiones y perfiles del editor. Studio guarda la paleta y el redondeo de su interfaz en `appearance.json`. El estilo del diseño se guarda en el JSON del proyecto. [Apariencia de Studio](WORKFLOW.md#personalizar-la-apariencia-de-studio)
 
 ## Verificación
 
