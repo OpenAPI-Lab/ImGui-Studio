@@ -37,7 +37,8 @@ static void runEditor(GLFWwindow* window, bool smokeTest) {
     int displayH = 0;
     glfwGetFramebufferSize(window, &displayW, &displayH);
     glViewport(0, 0, displayW, displayH);
-    glClearColor(0.05f, 0.06f, 0.09f, 1.00f);
+    const auto workspace = app.workspaceColor();
+    glClearColor(workspace.x, workspace.y, workspace.z, workspace.w);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -107,17 +108,6 @@ static int runStudio(int argc, char** argv) {
   io.FontDefault = ImGuiStudio::loadStudioFonts(*io.Fonts);
   if (smokeTest) io.IniFilename = nullptr;
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-
-  ImGui::StyleColorsDark();
-  ImGuiStyle& style = ImGui::GetStyle();
-  style.WindowRounding = 5.0f;
-  style.FrameRounding = 4.0f;
-  style.Colors[ImGuiCol_WindowBg] = ImVec4(0.075f, 0.091f, 0.116f, 1.0f);
-  style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.112f, 0.135f, 0.170f, 1.0f);
-  style.Colors[ImGuiCol_Border] = ImVec4(0.20f, 0.24f, 0.30f, 0.85f);
-  style.Colors[ImGuiCol_Button] = ImVec4(0.15f, 0.20f, 0.28f, 1.0f);
-  style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.22f, 0.32f, 0.46f, 1.0f);
-  style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.26f, 0.41f, 0.63f, 1.0f);
 
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glslVersion);

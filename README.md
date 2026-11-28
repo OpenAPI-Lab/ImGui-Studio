@@ -17,6 +17,7 @@ está pendiente de compilación y verificación.
 Sigue el [manual del editor](docs/WORKFLOW.md) para aprender qué hace cada
 panel y construir un diseño paso a paso. Consulta el
 [catálogo de widgets](docs/WIDGETS.md) para elegir controles.
+El manual también explica [cómo abrir y guardar con el selector](docs/WORKFLOW.md#abrir-y-guardar-con-el-selector) y [cómo cambiar la apariencia de Studio](docs/WORKFLOW.md#personalizar-la-apariencia-de-studio).
 
 ## Estructura del repositorio
 

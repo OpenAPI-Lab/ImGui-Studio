@@ -15,13 +15,21 @@
 | Acción | Qué hace y cuándo usarla |
 | --- | --- |
 | **Nuevo proyecto** | Abre un diseño nuevo. Si el lienzo está vacío, usa **Editar → Nueva ventana** para crear el contenedor raíz. |
-| **Abrir proyecto** | Abre un diseño JSON. Introduce su ruta o usa **Examinar** en Windows. **Proyectos recientes** vuelve a abrir una ruta ya usada. |
-| **Guardar proyecto** / **Guardar proyecto como…** | Escribe el JSON actual. Usa **Ctrl+S** para guardar o **Ctrl+Shift+S** para elegir otro archivo. Confirma el reemplazo de un archivo existente. |
+| **Abrir proyecto** | Abre el selector de archivos. Navega hasta el JSON, selecciónalo y pulsa **Abrir**. **Proyectos recientes** abre directamente los diseños de la lista. |
+| **Guardar proyecto** / **Guardar proyecto como…** | El primer guardado y **Ctrl+Shift+S** abren un selector de carpeta y nombre. Escribe el nombre del archivo y se añade `.json` si falta la extensión. Confirma si quieres reemplazar otro archivo. **Ctrl+S** guarda directamente cuando el proyecto ya tiene destino. |
 | **Guardar versión** | Captura un snapshot en el historial. Para actualizar el archivo principal usa **Guardar proyecto**. |
 | **Vista → Historial de versiones** | Muestra los snapshots, sus diferencias y opciones para restaurar o eliminar versiones. Al restaurar, guarda el diseño si quieres aplicar ese estado al JSON principal. |
 | **Recuperar sesión anterior** | Cuando hay una copia recuperable, **Recuperar copia** restaura el trabajo como un proyecto sin ruta. Guarda la copia con **Guardar proyecto como…**. **Más tarde** conserva la copia y confirmar **Descartar…** la elimina. |
 
 **Ctrl+O** abre el diálogo de proyecto. Usa **Ctrl+Z** para deshacer y **Ctrl+Y** o **Ctrl+Shift+Z** para rehacer. El [contrato de proyecto](PROJECT_FORMAT.md) explica qué se escribe en cada archivo.
+
+### Abrir y guardar con el selector
+
+1. Para cargar un diseño, usa **Abrir proyecto** en el inicio o **Archivo → Abrir proyecto JSON…** (**Ctrl+O**). Entra en la carpeta del diseño, selecciona el archivo y pulsa **Abrir**.
+2. Para guardar por primera vez o guardar una copia, elige una carpeta en el selector, escribe el nombre y pulsa **Guardar**. **Guardar proyecto como…** (**Ctrl+Shift+S**) vuelve a mostrar el selector. El primer guardado y **Guardar como** preguntan antes de reemplazar otro archivo.
+3. Al cancelar el selector puedes seguir trabajando en el proyecto actual. Si una carga falla, el editor muestra el error y conserva el diseño abierto.
+
+Windows usa el selector del sistema cuando está disponible. En el selector integrado, pulsa una carpeta para entrar, **Subir un nivel** para ir a la carpeta superior o **Carpeta personal** para volver a tu carpeta de usuario. Para abrir, se muestran archivos `.json` y `.JSON`.
 
 ## Qué hace cada panel
 
@@ -35,6 +43,7 @@
 | **Run / Build** | Usa las herramientas del perfil para generar y probar una versión del diseño. **Probar arranque** ejecuta la comprobación del host generado cuando está disponible. |
 | **Vista → Asistente IA** | Abre el selector de proveedores, modelo y conexión. Puedes revisar una propuesta antes de aplicarla como edición. [Configuración y datos que se envían](ASSISTANT.md) |
 | **Vista → Idioma** | Cambia el idioma de la interfaz. La selección se guarda para el siguiente arranque. [Idiomas y paquetes comunitarios](LOCALIZATION.md) |
+| **Vista → Apariencia de Studio** | Cambia la paleta y el redondeo de los paneles del editor. También está en la pantalla de inicio. La elección se recuerda al volver a abrir Studio y el diseño conserva sus propios colores. |
 
 ## Practicar con un diseño
 
@@ -47,6 +56,14 @@ Si quieres profundizar en un paso, consulta [Lienzo y disposición](CANVAS.md), 
 5. Selecciona un control y revisa **Colores del widget**. Al habilitar un color propio se sobrescribe su color heredado. Selecciona una ventana para configurar su apariencia. El alcance de las propiedades depende del control y el exportador. [Referencia de controles](REFERENCE.md#controles-nativos-alcance-de-la-tercera-entrega)
 6. Inserta una casilla, elige su **Valor inicial** y cambia a **Vista previa**. Pruébala con el ratón. **Reiniciar vista previa** recupera el estado inicial y **IDE** vuelve a la edición. Cambiar una casilla en la vista previa no cambia el valor inicial del diseño.
 7. Guarda el proyecto como JSON. En **Código generado**, elige C++ y **Exportar CMake…**. Indica una carpeta nueva cuyo directorio padre exista. Lee el README generado y `codegen_report.txt` para ver los pasos de compilación y los límites del destino. Conecta la acción de **Actualizar** en la aplicación que hospeda el código. [Ejemplo de acción en C++](../examples/title-bar-action/README.md)
+
+## Personalizar la apariencia de Studio
+
+1. Elige **Apariencia de Studio** en el inicio o abre **Vista → Apariencia de Studio** desde el editor.
+2. En **Paleta del editor**, selecciona **Midnight**, **Graphite**, **Ocean**, **Forest**, **Plum** o el tema claro **Porcelain**.
+3. Usa **Redondeo de paneles** para ajustar el radio. El valor predeterminado es 10 y puedes elegir un valor entre 0 y 18.
+
+La paleta se aplica a la interfaz de Studio y se conserva entre sesiones. Para cambiar los colores de una ventana o de un control del proyecto, selecciónalo en el lienzo y usa el **Inspector de Propiedades**.
 
 ## Qué camino usar al terminar el diseño
 

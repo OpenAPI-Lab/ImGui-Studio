@@ -15,6 +15,7 @@ and verifying the macOS DMG is pending.
 Follow the [editor manual](docs/WORKFLOW.en.md) to learn what each panel
 does and build a design step by step. Use the
 [widget catalog](docs/WIDGETS.en.md) to choose controls.
+The manual also explains [how to open and save with the file picker](docs/WORKFLOW.en.md#open-and-save-with-the-file-picker) and [how to customize Studio's appearance](docs/WORKFLOW.en.md#customize-studio-appearance).
 
 ## Build the editor
 

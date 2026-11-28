@@ -84,6 +84,20 @@ int main() {
     ImGui::ActivateItemByID(ImHashStr("###PaletteWindow", 0, items->ID));
     frame(editor); frame(editor);
   };
+  const auto selectProjectEntry = [&](StudioApp& editor, ImGuiWindow* dialog,
+      const std::filesystem::path& path) {
+    ProjectFileBrowser browser;
+    assert(!browser.selectFolder(path.parent_path()));
+    const auto row = std::find_if(browser.entries.begin(), browser.entries.end(), [&](const auto& entry) {
+      return entry.path == path;
+    });
+    assert(row != browser.entries.end());
+    assert(dialog->DC.ChildWindows.Size == 1);
+    const int index = static_cast<int>(std::distance(browser.entries.begin(), row));
+    const auto entryId = ImHashData(&index, sizeof(index), dialog->DC.ChildWindows[0]->ID);
+    ImGui::ActivateItemByID(ImHashStr("###project_entry", 0, entryId));
+    frame(editor); frame(editor);
+  };
   const auto chooseLanguage = [&](StudioApp& editor, const char* option) {
     const auto* content = welcomeContent();
     ImGui::ActivateItemByID(ImHashStr("###Language", 0, content->ID));
@@ -120,14 +134,24 @@ int main() {
     const auto* content = welcomeContent();
     ImGui::ActivateItemByID(ImHashStr("###WelcomeOpen", 0, content->ID));
     frame(editor); frame(editor);
-    auto* fileDialog = ImGui::FindWindowByName("###JsonDialog");
-    assert(fileDialog && fileDialog->Active && std::string(fileDialog->Name).find("JSON project file") == 0);
+    auto* fileDialog = ImGui::FindWindowByName("###OpenJson");
+    assert(fileDialog && fileDialog->Active && std::string(fileDialog->Name).find("Open JSON project") == 0);
     ImGui::ActivateItemByID(fileDialog->GetID("###Cancel"));
     frame(editor); frame(editor);
-    const int first = 0;
-    const auto rowId = ImHashData(&first, sizeof(first), content->ID);
-    ImGui::ActivateItemByID(ImHashStr("###recent", 0, rowId));
+    const auto invalid = root / "malformed.json";
+    assert(writeTextFileAtomically("{malformed", invalid));
+    ImGui::ActivateItemByID(ImHashStr("###WelcomeOpen", 0, content->ID));
     frame(editor); frame(editor);
+    assert(popupOpen("###OpenJson"));
+    selectProjectEntry(editor, fileDialog, invalid);
+    ImGui::ActivateItemByID(fileDialog->GetID("###Open"));
+    frame(editor); frame(editor);
+    assert(popupOpen("###OpenJson"));
+    assert(welcomeContent()->Active);
+    selectProjectEntry(editor, fileDialog, recent);
+    ImGui::ActivateItemByID(fileDialog->GetID("###Open"));
+    frame(editor); frame(editor);
+    assert(!popupOpen("###OpenJson"));
     assert(projectToJson(editor.project()) == projectToJson(saved));
     addWindow(editor);
     assert(editor.project().nodes.size() == 2);
@@ -150,6 +174,119 @@ int main() {
     assert(editor.shouldClose());
     const auto final = loadProjectFile(recent);
     assert(final && final.project->nodes.size() == 2);
+  }
+  {
+    const auto destinationFolder = root / std::filesystem::u8path(u8"Carpeta de prueba ñ");
+    std::filesystem::create_directory(destinationFolder);
+    ProjectFileBrowser browser;
+    assert(!browser.selectFolder(root));
+    browser.filename = "../invalid";
+    assert(!browser.destination());
+    assert(!browser.selectFolder(destinationFolder));
+    browser.filename = u8"Copia portátil";
+    assert(browser.destination() == destinationFolder / std::filesystem::u8path(u8"Copia portátil.json"));
+
+    StudioApp editor;
+    frame(editor); frame(editor);
+    const auto* content = welcomeContent();
+    const int first = 0;
+    const auto recentId = ImHashData(&first, sizeof(first), content->ID);
+    ImGui::ActivateItemByID(ImHashStr("###recent", 0, recentId));
+    frame(editor); frame(editor);
+    assert(!ImGui::FindWindowByName("##StudioWelcome")->Active);
+    const auto launchSaveAs = [&] {
+      io.AddKeyEvent(ImGuiMod_Ctrl, true);
+      io.AddKeyEvent(ImGuiMod_Shift, true);
+      io.AddKeyEvent(ImGuiKey_S, true);
+      frame(editor);
+      io.AddKeyEvent(ImGuiKey_S, false);
+      io.AddKeyEvent(ImGuiMod_Shift, false);
+      io.AddKeyEvent(ImGuiMod_Ctrl, false);
+      frame(editor);
+      auto* dialog = ImGui::FindWindowByName("###SaveAs");
+      assert(dialog && dialog->Active && popupOpen("###SaveAs"));
+      return dialog;
+    };
+    auto* dialog = launchSaveAs();
+    ImGui::ActivateItemByID(dialog->GetID("###Cancel"));
+    frame(editor); frame(editor);
+    assert(!popupOpen("###SaveAs"));
+
+    dialog = launchSaveAs();
+    selectProjectEntry(editor, dialog, destinationFolder);
+    const auto field = dialog->GetID("##SaveFilename");
+    ImGui::ActivateItemByID(field);
+    frame(editor); frame(editor);
+    assert(ImGui::GetActiveID() == field);
+    io.AddKeyEvent(ImGuiMod_Ctrl, true); io.AddKeyEvent(ImGuiKey_A, true); frame(editor);
+    io.AddKeyEvent(ImGuiKey_A, false); io.AddKeyEvent(ImGuiMod_Ctrl, false); frame(editor);
+    io.AddInputCharactersUTF8(u8"Copia portátil"); frame(editor);
+    ImGui::ActivateItemByID(dialog->GetID("###Save"));
+    frame(editor); frame(editor);
+    const auto copy = loadProjectFile(destinationFolder / std::filesystem::u8path(u8"Copia portátil.json"));
+    assert(copy && projectToJson(*copy.project) == projectToJson(editor.project()));
+    assert(!popupOpen("###SaveAs"));
+    addWindow(editor);
+    io.AddKeyEvent(ImGuiMod_Ctrl, true); io.AddKeyEvent(ImGuiKey_O, true);
+    frame(editor);
+    io.AddKeyEvent(ImGuiKey_O, false); io.AddKeyEvent(ImGuiMod_Ctrl, false);
+    frame(editor);
+    auto* unsaved = ImGui::FindWindowByName("###UnsavedTitle");
+    assert(unsaved && popupOpen("###UnsavedTitle"));
+    ImGui::ActivateItemByID(unsaved->GetID("###DiscardChanges"));
+    frame(editor); frame(editor);
+    auto* openDialog = ImGui::FindWindowByName("###OpenJson");
+    assert(openDialog && popupOpen("###OpenJson"));
+    ImGui::ActivateItemByID(openDialog->GetID("###ParentFolder"));
+    frame(editor); frame(editor);
+    selectProjectEntry(editor, openDialog, recent);
+    ImGui::ActivateItemByID(openDialog->GetID("###Open"));
+    frame(editor); frame(editor);
+    assert(!popupOpen("###OpenJson"));
+    assert(projectToJson(editor.project()) == projectToJson(*loadProjectFile(recent).project));
+    assert(editor.requestClose());
+  }
+  {
+    StudioApp editor(true, saved);
+    frame(editor); frame(editor);
+    addWindow(editor);
+    assert(!editor.requestClose());
+    frame(editor);
+    auto* unsaved = ImGui::FindWindowByName("###UnsavedTitle");
+    assert(unsaved && popupOpen("###UnsavedTitle"));
+    ImGui::ActivateItemByID(unsaved->GetID("###SaveContinue"));
+    frame(editor); frame(editor);
+    auto* dialog = ImGui::FindWindowByName("###SaveAs");
+    assert(dialog && popupOpen("###SaveAs"));
+    ImGui::ActivateItemByID(dialog->GetID("###Cancel"));
+    frame(editor); frame(editor);
+    assert(!editor.shouldClose() && editor.project().nodes.size() == 2);
+    assert(!editor.requestClose());
+    frame(editor);
+    assert(popupOpen("###UnsavedTitle"));
+    ImGui::ActivateItemByID(unsaved->GetID("###DiscardChanges"));
+    frame(editor);
+    assert(editor.shouldClose());
+  }
+  {
+    assert(saveEditorAppearance(root, EditorAppearance{5, 14}));
+    StudioApp editor;
+    frame(editor); frame(editor);
+    assert(ImGui::GetStyle().WindowRounding == 14.0f);
+    assert(editor.workspaceColor().x == editorColor(editorPalettes[5].workspace).x);
+    ImGui::ActivateItemByID(welcomeContent()->GetID("###EditorAppearance"));
+    frame(editor); frame(editor);
+    auto* settings = ImGui::FindWindowByName("###EditorAppearance");
+    assert(settings && settings->Active);
+    ImGui::ActivateItemByID(settings->GetID("##EditorPalette"));
+    frame(editor);
+    auto* palette = ImGui::FindWindowByName("##Combo_00");
+    assert(palette && palette->Active);
+    ImGui::ActivateItemByID(palette->GetID("Ocean"));
+    frame(editor); frame(editor);
+    assert(loadEditorAppearance(root).palette == 2);
+    assert(editor.workspaceColor().x == editorColor(editorPalettes[2].workspace).x);
+    assert(editor.requestClose());
   }
   {
     StudioApp editor;

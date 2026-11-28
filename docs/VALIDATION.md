@@ -49,6 +49,12 @@ El código de salida habitual de una prueba aprobada es `0`. El ejecutable con M
 
 Consulta la [matriz de alcance](CAPABILITIES.md) para distinguir lo que se verificó localmente y lo que queda pendiente.
 
+### Selector de proyectos y apariencia
+
+Ejecuta `SessionRecoveryUiTest` en una compilación con GUI y pruebas habilitadas. Cubre selección en el navegador integrado, subcarpetas, nombres con acentos, carga inválida, cancelación desde un aviso de cambios y persistencia de paleta. Para probar el diálogo nativo, abre una instancia normal de Windows y repite **Abrir proyecto**, **Guardar como**, el aviso de reemplazo y **Cancelar**. Anota qué selector apareció.
+
+Para cambios visuales, elige una paleta oscura y **Porcelain** en [Apariencia de Studio](WORKFLOW.md#personalizar-la-apariencia-de-studio). Cambia el radio y reabre el editor para comprobar el ajuste. Usa el mismo proyecto antes y después para comprobar que sus colores y radios se conservan en la vista previa.
+
 ## Ejecutar una exportación C++ completa
 
 En un build con GUI y pruebas activadas, ejecuta:
